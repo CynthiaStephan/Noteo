@@ -1,95 +1,54 @@
-# [Nom du Projet]
+# Nom du Projet
 
-## À Propos du Projet
+Une courte description du projet mettant en avant son objectif principal et son utilité.
 
-### Vision
-[Décrivez la vision globale et l'objectif final de votre projet en quelques phrases]
+## Documentation
 
-### Contexte
-Ce projet a été développé dans le cadre du cours [Nom du Cours] à [Nom de l'École/Université] pendant le semestre [Période].
+* **[Gestion des Branches GitHub](./docs/Guidelines.md)**
 
-### Problématique
-[Décrivez le problème que votre projet cherche à résoudre]
+## Fonctionnalités principales
 
-## Solution Proposée
+### Pour les utilisateurs
+- Liste des fonctionnalités disponibles pour les utilisateurs
+- Fonctionnalités interactives et système de retour
 
-### Approche
-[Expliquez votre approche pour résoudre le problème]
+### Pour les administrateurs
+- Gestion des utilisateurs et des permissions
+- Supervision des activités et administration du système
 
-### Caractéristiques Principales
-- [Caractéristique 1] : [Brève description]
-- [Caractéristique 2] : [Brève description]
-- [Caractéristique 3] : [Brève description]
+## Technique
 
-### Innovation
-[En quoi votre solution est-elle innovante ou différente des solutions existantes ?]
+- **Front** : Technologies utilisées pour le front-end
+- **Back** : Technologies utilisées pour le back-end
+- **Sécurité** : Méthodes d'authentification et de protection des données
+- **Environnement** : Outils de développement et de déploiement
+- **Gestion de projet** : Outils de collaboration et d'organisation
 
-## Mise en Œuvre
+## Documentation Technique
 
-### Architecture
-[Décrivez brièvement l'architecture de votre solution]
+* **[server/readme.md](./server/README.md)**
+* **[client/readme.md](./client/README.md)**
 
-### Choix Technologiques
-- **Frontend** : [Technologies utilisées et justification]
-- **Backend** : [Technologies utilisées et justification]
-- **Base de données** : [Technologies utilisées et justification]
-- **Autres** : [Outils complémentaires]
+## Installation
 
-### Défis Techniques
-[Listez les principaux défis techniques rencontrés et comment vous les avez surmontés]
-
-## Démonstration
-
-### Captures d'écran
-[Insérez des captures d'écran des fonctionnalités principales]
-
-### Lien vers la Demo
-[Si disponible, ajoutez un lien vers une démo en ligne]
-
-## Apprentissages
-
-### Réussites
-[Listez les principaux succès du projet]
-
-### Difficultés Surmontées
-[Décrivez les obstacles majeurs et comment l'équipe les a surmontés]
-
-### Perspectives d'Amélioration
-[Identifiez les axes d'amélioration possibles]
-
-## L'Équipe
-
-### Membres
-- [Nom] : [Rôle principal + compétences clés apportées au projet]
-- [Nom] : [Rôle principal + compétences clés apportées au projet]
-- [Nom] : [Rôle principal + compétences clés apportées au projet]
-
-### Organisation
-[Décrivez brièvement comment l'équipe s'est organisée (méthodes, outils, réunions)]
-
-## Guide Technique
-
-### Prérequis
-[Listez les prérequis techniques pour faire fonctionner le projet]
-
-### Installation
 ```bash
-# Instructions d'installation étape par étape
+# Cloner le projet
+git clone <URL_DU_REPO>
+
+# Lancement avec Docker
+docker-compose up -d --build
 ```
 
-### Configuration
-[Détaillez les étapes de configuration nécessaires]
+## Auteur(s)
 
-### Utilisation
-[Instructions basiques d'utilisation]
+Développé dans le cadre d'un projet par :
 
-## Ressources
+<a href="<URL_DU_REPO>/graphs/contributors">
+  <img src="https://contrib.rocks/image?repo=<URL_DU_REPO>" />
+</a>
 
-### Documentation
-[Liens vers la documentation détaillée si elle existe]
-
-### Sources
-[Références et ressources utilisées pour le projet]
-
-## Remerciements
-[Remerciements aux encadrants, mentors ou autres personnes ayant contribué au projet]
+[Nom1](https://github.com/Nom1) `Rôle`  
+[Nom2](https://github.com/Nom2) `Rôle`  
+[Nom3](https://github.com/Nom3) `Rôle`  
+[Nom4](https://github.com/Nom4) `Rôle`  
+[Nom5](https://github.com/Nom5) `Rôle`
