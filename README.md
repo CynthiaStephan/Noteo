@@ -1,54 +1,61 @@
-# Nom du Projet
+# Note : Application d'Évaluation des Étudiants
 
-Une courte description du projet mettant en avant son objectif principal et son utilité.
+Une application web permettant aux étudiants de s'auto-évaluer et aux formateurs d'évaluer leurs étudiants. Elle offre des visualisations graphiques interactives pour comparer les résultats et identifier les écarts d'apprentissage, facilitant ainsi le suivi pédagogique.
+
+## 📋 Présentation
+
+L'objectif de cette application est de permettre aux étudiants de s'auto-évaluer et aux formateurs d'évaluer leurs étudiants. L'application offre la possibilité de comparer les résultats sous forme de graphiques interactifs pour visualiser les écarts et tendances d'apprentissage.
 
 ## Documentation
 
-* **[Gestion des Branches GitHub](./docs/Guidelines.md)**
+* **[Gestion des Branches GitHub](./docs/git-guidelines.md)**
+* **[Gestion des Contenaires Docker](./docs/docker-guidelines.md)**
 
-## Fonctionnalités principales
+## ✨ Fonctionnalités principales
 
-### Pour les utilisateurs
-- Liste des fonctionnalités disponibles pour les utilisateurs
-- Fonctionnalités interactives et système de retour
+### Pour les étudiants
+
+- S'inscrire et se connecter pour accéder à un espace personnel
+- Remplir des questionnaires d'auto-évaluation pour suivre sa progression
+- Consulter ses résultats sous forme de graphiques
+
+### Pour les formateurs
+
+- Créer et gérer des questionnaires d'évaluation pour les étudiants
+- Évaluer les étudiants en attribuant des notes (même questionnaire)
+- Visualiser et comparer les résultats sous forme de graphiques
+- Filtrer les résultats par période ou étudiant
+- Exporter les résultats sous format PDF et Excel
 
 ### Pour les administrateurs
-- Gestion des utilisateurs et des permissions
-- Supervision des activités et administration du système
 
-## Technique
+- Gérer les comptes utilisateurs (création, modification, suppression)
+- Paramétrer les rôles des utilisateurs
+- Supervision globale du système
 
-- **Front** : Technologies utilisées pour le front-end
-- **Back** : Technologies utilisées pour le back-end
-- **Sécurité** : Méthodes d'authentification et de protection des données
-- **Environnement** : Outils de développement et de déploiement
-- **Gestion de projet** : Outils de collaboration et d'organisation
+## 🔧 Technologies utilisées
+
+- **Frontend** : React.js, Chart.js
+- **Backend** : Node.js,
+- **Base de données** : MySQL
+- **Sécurité** : Gestion des rôles et permissions
+- **Environnement** : GitHub
 
 ## Documentation Technique
 
-* **[server/readme.md](./server/README.md)**
-* **[client/readme.md](./client/README.md)**
+- **server/readme.md**
+- **client/readme.md**
 
-## Installation
+## 🚀 Installation
 
 ```bash
-# Cloner le projet
-git clone <URL_DU_REPO>
+# Cloner le dépôt
+git clone <https://github.com/CynthiaStephan/Noteo>
 
 # Lancement avec Docker
 docker-compose up -d --build
 ```
 
-## Auteur(s)
+## Auteurs
 
-Développé dans le cadre d'un projet par :
-
-<a href="<URL_DU_REPO>/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=<URL_DU_REPO>" />
-</a>
-
-[Nom1](https://github.com/Nom1) `Rôle`  
-[Nom2](https://github.com/Nom2) `Rôle`  
-[Nom3](https://github.com/Nom3) `Rôle`  
-[Nom4](https://github.com/Nom4) `Rôle`  
-[Nom5](https://github.com/Nom5) `Rôle`
+Développé dans le cadre d'un projet pédagogique par :
