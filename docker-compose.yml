@@ -3,7 +3,7 @@ services:
     build:
       context: server
       dockerfile: ../Dockerfile
-    command: npm start
+    command: ["bash", "-c", "npm install && npm start"]
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
     volumes:
@@ -20,7 +20,7 @@ services:
     build:
       context: client
       dockerfile: ../Dockerfile
-    command: npm run dev
+    command: ["bash", "-c", "npm install && npm run dev"]
     ports:
       - 5173:5173
     volumes:
@@ -30,6 +30,9 @@ services:
       - /usr/app/node_modules
     depends_on:
       - server
+    environment:
+      CHOKIDAR_USEPOLLING: "true"
+      WATCHPACK_POLLING: "true"
   
   database:
     image: mysql
@@ -38,6 +41,8 @@ services:
       - MYSQL_USER=${DATABASE_USER}
       - MYSQL_PASSWORD=${DATABASE_PASSWORD}
       - MYSQL_DATABASE=${DATABASE_NAME}
+    ports:
+      - "3630:3306"
     healthcheck:
       test: mysqladmin ping -h 127.0.0.1 -u $$MYSQL_USER --password=$$MYSQL_PASSWORD
       start_period: 5s
