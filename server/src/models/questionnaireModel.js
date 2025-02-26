@@ -28,7 +28,7 @@ Questionnaire.associate = (models) => {
     });
     Questionnaire.belongsToMany(models.user, {
         through: 'questionnaire_user',
-        foreighKey: 'questionnaire_id',
+        foreignKey: 'questionnaire_id',
     });
     // Vers Question
     Questionnaire.hasMany(models.question, {

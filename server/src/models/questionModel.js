@@ -17,7 +17,7 @@ const Question = sequelize.define('question', {
 Question.associate = (models) => {
     // Vers Questionnaire
     Question.belongsTo(models.questionnaire, {
-        foreighKey: 'questionnaire_id',
+        foreignKey: 'questionnaire_id',
     });
     // Vers Answer
     Question.belongsToMany(models.answer, {
