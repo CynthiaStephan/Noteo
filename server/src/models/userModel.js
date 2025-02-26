@@ -43,12 +43,12 @@ const User = sequelize.define('user', {
 });
 
 User.associate = (models) => {
-    User.belongsToMany(models.anwser, {
+    User.belongsToMany(models.answer, {
         through: 'answer_user',
         foreignKey:'user_id'
     });
     User.belongsToMany(models.questionnaire, {
-        through: 'questionnaire_answer',
+        through: 'questionnaire_user',
         foreignKey: 'user_id'
     });
     User.hasMany(models.questionnaire, {
