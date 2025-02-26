@@ -1,0 +1,41 @@
+nav{
+    padding: 0 30px;
+    background-color: gray;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 64px;
+}
+
+nav div{
+    display: flex;
+    gap: 30px;
+}
+
+nav button{
+    width: 181px;
+    height: 32px;
+    background-color: white;
+    border-radius: 7px;
+    border: none;
+}
+
+nav h1{
+    font-weight: normal;
+    font-size: 32px;
+}
+
+@media (max-width: 635px) {
+    nav{
+        padding: 0 15px;
+        height: 50px;
+    }
+    nav h1{
+        font-weight: normal;
+        font-size: 28px;
+    }
+    nav button{
+        width: 150px;
+        height: 30px;
+    }
+ }
