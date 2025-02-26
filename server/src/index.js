@@ -3,19 +3,18 @@ const app = require('./app');
 const sequelize = require('./database');
 
 // Models import
-// const User = require('./models/userModel');
-// const Blacklist = require('./models/blacklistModel');
-// const Cohort = require('./models/cohortModel');
-// const CohortUser = require('./models/cohortUserModel');
-// const MoodScore = require('./models/moodScoreModel');
+const User = require('./models/userModel');
+const Questionnaire = require('./models/questionnaire');
+const Question = require('./models/question');
+const Answer = require('./models/answer');
 
-// const models = { User, Blacklist, Cohort, CohortUser, MoodScore };
+const models = { User, Questionnaire, Question, Answer };
 
-// Object.values(models).forEach((model) => {
-//     if (model.associate) {
-//         model.associate(models);
-//     }
-// });
+Object.values(models).forEach((model) => {
+    if (model.associate) {
+        model.associate(models);
+    }
+});
 
 
 (async () => {

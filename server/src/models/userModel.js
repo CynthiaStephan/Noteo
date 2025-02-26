@@ -42,4 +42,18 @@ const User = sequelize.define('user', {
     updatedAt: false
 });
 
+User.associate = (models) => {
+    User.belongsToMany(models.anwser, {
+        through: 'answer_user',
+        foreignKey:'user_id'
+    });
+    User.belongsToMany(models.questionnaire, {
+        through: 'questionnaire_answer',
+        foreignKey: 'user_id'
+    });
+    User.hasMany(models.questionnaire, {
+        foreignKey: 'user_id'
+    });
+};
+
 module.exports = User;
