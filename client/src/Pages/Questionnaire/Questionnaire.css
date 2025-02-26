@@ -2,17 +2,6 @@
     display: flex;
 }
 
-.divL {
-    border-right: solid black 1px;
-    width: 50vw;
-    height: 100vh;
-}
-
-.divR {
-    width: 50vw;
-    height: 100vh;
-}
-
 .graphique {
     margin: auto;
     width: 65%;
@@ -20,20 +9,6 @@
 
 .listQuestionnaire {
     border-top: solid black 1px;
-}
-
-.divL h2 {
-    text-align: center;
-}
-
-.divL ul {
-    padding: 0 1.5vw;
-}
-
-.divL li {
-    display: flex;
-    justify-content: space-between;
-    margin: 10px 0;
 }
 
 .questionList {
