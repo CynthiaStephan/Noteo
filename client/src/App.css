@@ -3,3 +3,28 @@ ul, li{
     padding: 0;
     margin: 0;
 }
+
+.divL {
+    border-right: solid black 1px;
+    width: 50vw;
+    height: 100vh;
+}
+
+.divL h2 {
+    text-align: center;
+}
+
+.divR {
+    width: 50vw;
+    height: 100vh;
+}
+
+.divL ul {
+    padding: 0 1.5vw;
+}
+
+.divL li {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}

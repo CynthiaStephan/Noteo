@@ -1,0 +1,11 @@
+.nomQuestion {
+    display: flex;
+    flex-direction: column;
+    gap: 2vh;
+    padding: 2vh 2vw;
+}
+
+.addQuestion {
+    width: 100%;
+    text-align: center;
+}
