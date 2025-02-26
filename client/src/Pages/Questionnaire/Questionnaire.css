@@ -1,0 +1,69 @@
+.sectionQuestionnaire {
+    display: flex;
+}
+
+.divL {
+    border-right: solid black 1px;
+    width: 50vw;
+    height: 100vh;
+}
+
+.divR {
+    width: 50vw;
+    height: 100vh;
+}
+
+.graphique {
+    margin: auto;
+    width: 65%;
+}
+
+.listQuestionnaire {
+    border-top: solid black 1px;
+}
+
+.divL h2 {
+    text-align: center;
+}
+
+.divL ul {
+    padding: 0 1.5vw;
+}
+
+.divL li {
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0;
+}
+
+.questionList {
+    height: 80vh;
+    overflow-y: scroll;
+}
+
+.btnEnvoyer {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 3vh;
+    margin-right: 1vw;
+}
+
+.questionnaireListe {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 2vh;
+    gap: 1vh;
+    height: 50vh;
+    overflow-y: scroll;
+}
+
+
+#questionnaireBtn {
+    color: black;
+    width: 30vw;
+}
+
+#questionnaireBtn:hover {
+    background-color: lightblue;
+}
