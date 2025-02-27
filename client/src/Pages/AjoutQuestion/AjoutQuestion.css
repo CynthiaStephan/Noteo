@@ -9,3 +9,14 @@
     width: 100%;
     text-align: center;
 }
+
+.questionCree{
+    display: flex;
+    width: 100%;
+}
+
+.btnCree{
+    display: flex;
+    justify-content: flex-end;
+    margin: 2vh 2vw;
+}
