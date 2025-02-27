@@ -7,7 +7,7 @@ ul, li{
 .divL {
     border-right: solid black 1px;
     width: 50vw;
-    height: 100vh;
+    height: 90vh;
 }
 
 .divL h2 {
@@ -16,7 +16,7 @@ ul, li{
 
 .divR {
     width: 50vw;
-    height: 100vh;
+    height: 90vh;
 }
 
 .divL ul {
