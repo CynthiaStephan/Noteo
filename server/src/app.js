@@ -6,6 +6,8 @@ const cors = require('cors');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
+const userRoutes = require('./routes/userRoutes');
+
 const app = express();
 
 const corsOptions = {
@@ -30,11 +32,11 @@ app.use(cors());
 // Initializing Passport for authentication
 app.use(passport.initialize());
 
-
 app.get('/', (req, res) => {
     res.json({ message: 'Test réussi !' });
 });
 
+app.use('/user', userRoutes);
 // Registering route modules for handling specific API paths
 app.use('/auth', authRoutes);
 
