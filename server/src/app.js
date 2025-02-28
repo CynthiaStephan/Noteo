@@ -36,7 +36,7 @@ app.get('/', (req, res) => {
 });
 
 // Registering route modules for handling specific API paths
-// app.use('/auth', authRoutes);
+app.use('/auth', authRoutes);
 
 // Exporting the configured Express app for use in other files
 module.exports = app;
