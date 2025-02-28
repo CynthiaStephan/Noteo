@@ -19,6 +19,7 @@ import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Paper from '@mui/material/Paper';
 import useMediaQuery from '@mui/material/useMediaQuery';
+import Autocomplete from '@mui/material/Autocomplete';
 
 /** import css */
 import './AjoutQuestion.css';
@@ -29,6 +30,7 @@ export const AjoutQuestion = () => {
 
     const [question, setQuestion] = useState([]) //recuperes et stock la liste des questions
     const [title, setTitle] = useState([{ titre: '' }]) //recuperes et stock le titre du questionnaire
+    const [newQuestion, setNewQuestion] = useState('')
 
     /** rajoute un champ de text a remplir */
     const addQuestion = () => {
@@ -42,6 +44,7 @@ export const AjoutQuestion = () => {
 
     /** recupers la valeur du champ de text des questions */
     const handleQuestionChange = (id, value) => {
+        console.log(value)
         setQuestion(
             question.map((question) =>
                 question.id === id ? { ...question, text: value } : question
@@ -54,11 +57,19 @@ export const AjoutQuestion = () => {
         setTitle([{ titre: value }])
     }
 
+    const handleNewQuestionChange = (value) => {
+        setNewQuestion(value)
+    }
+
+    const createNewQuestion = () => {
+        console.log(newQuestion)
+    }
+
     /** gestion du bouton d'envoie */
     const getQuestions = () => {
         /** verifie que les champs de text son bien remplie et renvoie une erreur si il y en a un vide */
         const questionEmpty = question.some((question) => question.text.trim() == '');
-        const titleEmpty = title.some((title) => title.titre == '') 
+        const titleEmpty = title.some((title) => title.titre == '')
 
         if (questionEmpty || titleEmpty) {
             alert("Veuillez remplir tous les champs avant d'envoyer !");
@@ -212,7 +223,6 @@ export const AjoutQuestion = () => {
             <NavBase />
             <section className='sectionQuestionnaire'>
                 <div className='divL'>
-
                     <div className='nomQuestion'>
                         <h2>Crée questionnaire</h2>
                         <TextField onChange={(e) => handleTitleChange(e.target.value)} id="outlined-basic" label="Nom questionnaire:" variant="outlined" required />
@@ -220,12 +230,12 @@ export const AjoutQuestion = () => {
                     <ul className='questionList'>
                         {question.map((question) => (
                             <li key={question.id}>
-                                <TextField onChange={(e) => handleQuestionChange(question.id, e.target.value)}
-                                    className='questionCree'
-                                    id="outlined-basic"
-                                    label="Question:"
-                                    variant="outlined"
-                                    required
+                                <Autocomplete onChange={
+                                    (e) => handleQuestionChange(question.id, e.target.textContent)}
+                                    disablePortal
+                                    options={['question1', 'plop']}
+                                    sx={{ width: 10000 }}
+                                    renderInput={(params) => <TextField {...params} label="question" />}
                                 />
                                 <IconButton onClick={() => removeQuestion(question.id)} aria-label="RemoveCircleOutlineIcon" size="large">
                                     <RemoveCircleOutlineIcon fontSize="inherit" />
@@ -239,9 +249,9 @@ export const AjoutQuestion = () => {
                         </div>
                     </ul>
 
-                    <div className='btnCree'>
-                        <Button onClick={getQuestions} variant="contained" disableElevation>Crée</Button>
-                        <button onClick={() => console.log(right.map(index => listEtudiant[index]))}>CLICK</button>
+                    <div className='addNewQuestion'>
+                        <TextField onChange={(e) => handleNewQuestionChange(e.target.value)} label="Nouvelle question:" variant="outlined" />
+                        <Button onClick={createNewQuestion} variant="contained" disableElevation>Crée nouvelle question</Button>
                     </div>
                 </div>
 
@@ -312,10 +322,13 @@ export const AjoutQuestion = () => {
                             </Grid>
                             <Grid item>{customList(right)}</Grid>
                         </Grid>
+                        <div className='btnCree'>
+                            <Button onClick={getQuestions} variant="contained" disableElevation>Crée questionnaire</Button>
+                            <button onClick={() => console.log(right.map(index => listEtudiant[index]))}>CLICK</button>
+                        </div>
                     </div>
                 </div>
             </section>
-            <button onClick={() => console.log(selectedFormation)}>CLICK</button>
         </>
     )
 }

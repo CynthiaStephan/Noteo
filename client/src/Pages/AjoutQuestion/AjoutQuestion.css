@@ -15,6 +15,11 @@
     width: 100%;
 }
 
+.addNewQuestion{
+    display: flex;
+    
+}
+
 .btnCree {
     display: flex;
     justify-content: flex-end;
