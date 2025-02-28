@@ -1,3 +1,4 @@
+/** import des different modules */
 import { useState } from 'react';
 import { NavBase } from '../../Nav/NavBase';
 import TextField from '@mui/material/TextField';
@@ -19,22 +20,27 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Paper from '@mui/material/Paper';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
+/** import css */
 import './AjoutQuestion.css';
 
+/** export de la page */
 export const AjoutQuestion = () => {
-
     /** gestions ajout questions */
-    const [question, setQuestion] = useState([])
-    const [title, setTitle] = useState([{ titre: '' }])
 
+    const [question, setQuestion] = useState([]) //recuperes et stock la liste des questions
+    const [title, setTitle] = useState([{ titre: '' }]) //recuperes et stock le titre du questionnaire
+
+    /** rajoute un champ de text a remplir */
     const addQuestion = () => {
         setQuestion([...question, { id: Date.now(), text: '' }])
     }
 
+    /** retire un champ de text a remplir */
     const removeQuestion = (id) => {
         setQuestion(question.filter((question) => question.id !== id))
     }
 
+    /** recupers la valeur du champ de text des questions */
     const handleQuestionChange = (id, value) => {
         setQuestion(
             question.map((question) =>
@@ -43,15 +49,17 @@ export const AjoutQuestion = () => {
         )
     }
 
+    /** recupers la valeur du champ de text du titre */
     const handleTitleChange = (value) => {
         setTitle([{ titre: value }])
     }
 
+    /** gestion du bouton d'envoie */
     const getQuestions = () => {
+        /** verifie que les champs de text son bien remplie et renvoie une erreur si il y en a un vide */
         const questionEmpty = question.some((question) => question.text.trim() == '');
-        const titleEmpty = title.some((title) => title.titre == '')
+        const titleEmpty = title.some((title) => title.titre == '') 
 
-        console.log(titleEmpty)
         if (questionEmpty || titleEmpty) {
             alert("Veuillez remplir tous les champs avant d'envoyer !");
             return;
@@ -61,6 +69,7 @@ export const AjoutQuestion = () => {
             return;
         }
 
+        /** stock les valeurs du questionnaires */
         let questionnaire = {
             titre: title[0].titre,
             question: question
@@ -76,7 +85,6 @@ export const AjoutQuestion = () => {
         'Cda',
         'ERA'
     ]
-
     let listEtudiant = [
         {
             "nom": "Dupont",
@@ -100,18 +108,22 @@ export const AjoutQuestion = () => {
         }
     ]
 
-    const [selectedFormation, setSelectedFormation] = useState([]);
+    const [selectedFormation, setSelectedFormation] = useState([]); //recuperes et stock la liste des formation selectionner
+    const [checked, setChecked] = useState([]); //stock la valeur des élément cocher de la liste d'éléves
+    const [left, setLeft] = useState(listEtudiant.map((etudiant, index) => index)); //stock la liste d'éleves a afficher dans la liste de gauche
+    const [right, setRight] = useState([]); //stock la liste d'éleves a afficher dans la liste de droite
 
+    /** recuperes la valeur des élément sélectionner */
     const changeSelect = (event) => {
         const {
             target: { value },
         } = event;
         setSelectedFormation(
-
             typeof value === 'string' ? value.split(',') : value,
         );
     };
 
+    /** gere les checkbox en fonction du coter ou il sont */
     const not = (a, b) => {
         return a.filter((value) => !b.includes(value));
     }
@@ -119,13 +131,22 @@ export const AjoutQuestion = () => {
     const intersection = (a, b) => {
         return a.filter((value) => b.includes(value));
     }
-
-    const [checked, setChecked] = useState([]);
-    const [left, setLeft] = useState(listEtudiant.map((etudiant, index) => index));
-    const [right, setRight] = useState([]);
-
     const leftChecked = intersection(checked, left);
     const rightChecked = intersection(checked, right);
+
+    /** geres le bouton pour passer les élément a droite  */
+    const handleCheckedRight = () => {
+        setRight(right.concat(leftChecked));
+        setLeft(not(left, leftChecked));
+        setChecked(not(checked, leftChecked));
+    };
+
+    /** geres le bouton pour passer les élément a gauche  */
+    const handleCheckedLeft = () => {
+        setLeft(left.concat(rightChecked));
+        setRight(not(right, rightChecked));
+        setChecked(not(checked, rightChecked));
+    };
 
     const handleToggle = (value) => () => {
         const currentIndex = checked.indexOf(value);
@@ -140,17 +161,6 @@ export const AjoutQuestion = () => {
         setChecked(newChecked);
     };
 
-    const handleCheckedRight = () => {
-        setRight(right.concat(leftChecked));
-        setLeft(not(left, leftChecked));
-        setChecked(not(checked, leftChecked));
-    };
-
-    const handleCheckedLeft = () => {
-        setLeft(left.concat(rightChecked));
-        setRight(not(right, rightChecked));
-        setChecked(not(checked, rightChecked));
-    };
 
     const [searchTerm, setSearchTerm] = useState('');
 
@@ -165,6 +175,7 @@ export const AjoutQuestion = () => {
         );
     });
 
+    /** crée un élément dans la liste pour chaque étudiant */
     const customList = (items) => (
         <Paper sx={{ width: 200, height: 230, overflow: 'auto' }}>
             <List dense component="div" role="list">
@@ -195,6 +206,7 @@ export const AjoutQuestion = () => {
         </Paper>
     );
 
+    /** affichage des éléments dans le HTML */
     return (
         <>
             <NavBase />
@@ -303,6 +315,7 @@ export const AjoutQuestion = () => {
                     </div>
                 </div>
             </section>
+            <button onClick={() => console.log(selectedFormation)}>CLICK</button>
         </>
     )
 }
