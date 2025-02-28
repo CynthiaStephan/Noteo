@@ -7,12 +7,14 @@ const User = require('./models/userModel');
 const Questionnaire = require('./models/questionnaireModel');
 const Question = require('./models/questionModel');
 const Answer = require('./models/answerModel');
+const Traning = require('./models/trainingModel');
 
 const models = {
     user: User,
     questionnaire: Questionnaire,
     question: Question,
-    answer: Answer
+    answer: Answer,
+    traning: Traning
 };
 
 Object.values(models).forEach((model) => {
