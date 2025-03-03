@@ -2,7 +2,7 @@ const { DataTypes } = require('sequelize');
 const sequelize = require('../database');
 
 const Training = sequelize.define('training', {
-    formation_id: {
+    training_id: {
         type: DataTypes.INTEGER, 
         autoIncrement: true,
         primaryKey: true,
