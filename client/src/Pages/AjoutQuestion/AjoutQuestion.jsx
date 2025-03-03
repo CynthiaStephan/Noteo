@@ -1,5 +1,5 @@
 /** import des different modules */
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { NavBase } from '../../Nav/NavBase';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -66,7 +66,7 @@ export const AjoutQuestion = () => {
     }
 
     /** gestion du bouton d'envoie */
-    const getQuestions = () => {
+    const createQuestionnaire = () => {
         /** verifie que les champs de text son bien remplie et renvoie une erreur si il y en a un vide */
         const questionEmpty = question.some((question) => question.text.trim() == '');
         const titleEmpty = title.some((title) => title.titre == '')
@@ -87,6 +87,7 @@ export const AjoutQuestion = () => {
         }
 
         console.log(questionnaire)
+        console.log(right.map(index => listEtudiant[index]))
     }
 
     /** gestion de à qui l'envoyer */
@@ -97,26 +98,22 @@ export const AjoutQuestion = () => {
         'ERA'
     ]
     let listEtudiant = [
-        {
-            "nom": "Dupont",
-            "prenom": "Jean"
-        },
-        {
-            "nom": "Martin",
-            "prenom": "Sophie"
-        },
-        {
-            "nom": "Lemoine",
-            "prenom": "Paul"
-        },
-        {
-            "nom": "Durand",
-            "prenom": "Emma"
-        },
-        {
-            "nom": "Bernard",
-            "prenom": "Lucas"
-        }
+    { "nom": "Dupont", "prenom": "Jean", "formation": "Front" },
+    { "nom": "Martin", "prenom": "Sophie", "formation": "Back" },
+    { "nom": "Lemoine", "prenom": "Paul", "formation": "Cda" },
+    { "nom": "Durand", "prenom": "Emma", "formation": "ERA" },
+    { "nom": "Bernard", "prenom": "Lucas", "formation": "Front" },
+    { "nom": "Petit", "prenom": "Camille", "formation": "Back" },
+    { "nom": "Robert", "prenom": "Nicolas", "formation": "Cda" },
+    { "nom": "Richard", "prenom": "Elodie", "formation": "ERA" },
+    { "nom": "Simon", "prenom": "Julien", "formation": "Front" },
+    { "nom": "Lefevre", "prenom": "Alice", "formation": "Back" },
+    { "nom": "Morel", "prenom": "Thomas", "formation": "Cda" },
+    { "nom": "Girard", "prenom": "Laura", "formation": "ERA" },
+    { "nom": "Andre", "prenom": "Maxime", "formation": "Front" },
+    { "nom": "Lambert", "prenom": "Chloe", "formation": "Back" },
+    { "nom": "Bonnet", "prenom": "Antoine", "formation": "Cda" },
+    { "nom": "Francois", "prenom": "Julie", "formation": "ERA" }
     ]
 
     const [selectedFormation, setSelectedFormation] = useState([]); //recuperes et stock la liste des formation selectionner
@@ -124,7 +121,22 @@ export const AjoutQuestion = () => {
     const [left, setLeft] = useState(listEtudiant.map((etudiant, index) => index)); //stock la liste d'éleves a afficher dans la liste de gauche
     const [right, setRight] = useState([]); //stock la liste d'éleves a afficher dans la liste de droite
 
-    /** recuperes la valeur des élément sélectionner */
+    /** filtre les étudiant avec le select formation */
+    useEffect(() => {
+        if (selectedFormation.length > 0) {
+            let selectedEtudiants = listEtudiant
+                .map((etudiant, index) => (selectedFormation.includes(etudiant.formation) ? index : null))
+                .filter((index) => index !== null);
+            setRight(selectedEtudiants);
+            setLeft(listEtudiant.map((etudiant, index) => (selectedEtudiants.includes(index) ? null : index)).filter(index => index !== null));
+        } else {
+            setLeft(listEtudiant.map((etudiant, index) => index));
+            setRight([]);
+        }
+    }, [selectedFormation]); 
+
+
+    /** recuperes la valeur des formations sélectionner */
     const changeSelect = (event) => {
         const {
             target: { value },
@@ -323,8 +335,7 @@ export const AjoutQuestion = () => {
                             <Grid item>{customList(right)}</Grid>
                         </Grid>
                         <div className='btnCree'>
-                            <Button onClick={getQuestions} variant="contained" disableElevation>Crée questionnaire</Button>
-                            <button onClick={() => console.log(right.map(index => listEtudiant[index]))}>CLICK</button>
+                            <Button onClick={createQuestionnaire} variant="contained" disableElevation>Crée questionnaire</Button>
                         </div>
                     </div>
                 </div>
