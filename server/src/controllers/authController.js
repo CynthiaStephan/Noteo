@@ -11,13 +11,11 @@ class AuthController{
 
         try{
             const user = await UserModel.findOne({ where: { email: email } });
-            console.log(user)
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 return res.status(401).json({ message: "Wrong email or password" });
             }
-            console.log("JWT_SECRET:", process.env.JWT_SECRET);
             const token = jwt.sign({ username: user.username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '2h' });
-            console.log(`Token: ${token}`)
+            
             res.cookie("token", token, {
                 httpOnly: true,
                 secure: false,
