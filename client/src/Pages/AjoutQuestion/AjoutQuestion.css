@@ -56,3 +56,29 @@
     align-items: center;
     gap: 2vw;
 }
+
+@media (max-width: 1050px) {
+    /*changé les icone des bouton*/
+
+}
+
+@media (max-width: 670px) {
+    #flexL {
+        display: flex;
+        flex-direction: column;
+    }
+    #flexR {
+        display: flex;
+        flex-direction: column;
+    }
+    .addNewQuestion {
+        display: flex;   
+        justify-content: center;
+    }
+    .btnCree {
+    display: flex;
+    justify-content: center;}
+    .nomQuestion {
+        max-width: 98vw;
+    }
+}

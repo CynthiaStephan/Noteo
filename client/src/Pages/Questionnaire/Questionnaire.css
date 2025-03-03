@@ -1,5 +1,6 @@
 .sectionQuestionnaire {
     display: flex;
+    flex-direction: row;
 }
 
 .graphique {
@@ -29,10 +30,14 @@
     align-items: center;
     margin-top: 2vh;
     gap: 1vh;
+    width: 50vw;
     height: 50vh;
     overflow-y: scroll;
 }
 
+.divR {
+    display: block;
+}
 
 #questionnaireBtn {
     color: black;
@@ -42,3 +47,24 @@
 #questionnaireBtn:hover {
     background-color: lightblue;
 }
+
+@media (max-width: 670px) {
+    #flexLQ {
+        display: flex;
+        flex-direction: column;
+    }
+    #flexRQ {
+        display: flex;
+        flex-direction: column-reverse;
+    }
+
+    .questionnaireListe {
+        border-top: none;
+        width: 100vw;}
+        .btnEnvoyer {
+         margin-right: 4vw;
+    }
+    .listQuestionnaire {
+        border-top: none;
+    }
+ }

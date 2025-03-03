@@ -75,8 +75,8 @@ export const Questionnaire = () => {
         chartData &&
         <>
             <NavBase />
-            <section className='sectionQuestionnaire'>
-                <div className='divL'>
+            <section className='sectionQuestionnaire' id='flexLQ'>
+                <div className='divL' >
                     <h2>Questionnaire 1</h2>
                     <ul className='questionList'>
                         {question.map(q =>
@@ -100,7 +100,7 @@ export const Questionnaire = () => {
                     </div>
 
                 </div>
-                <div className='divR'>
+                <div className='divR' id='flexRQ'>
                     <div className='graphique'>
                         <Radar
                             data={chartData}

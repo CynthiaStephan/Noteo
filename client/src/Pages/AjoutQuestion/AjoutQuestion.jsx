@@ -221,7 +221,7 @@ export const AjoutQuestion = () => {
     return (
         <>
             <NavBase />
-            <section className='sectionQuestionnaire'>
+            <section className='sectionQuestionnaire' id='flexL'>
                 <div className='divL'>
                     <div className='nomQuestion'>
                         <h2>Crée questionnaire</h2>
@@ -255,7 +255,7 @@ export const AjoutQuestion = () => {
                     </div>
                 </div>
 
-                <div className='divR'>
+                <div className='divR' id='flexR'>
                     <div className='selectFormation'>
                         <h3>Sélection formation</h3>
                         <FormControl className='listFormation'>
@@ -279,7 +279,7 @@ export const AjoutQuestion = () => {
                         </FormControl>
                     </div>
 
-                    <div className='selectEtudiant'>
+                    <div className='selectEtudiant' >
                         <div className='etudiantSearchDiv'>
                             <h3>Sélection étudiant</h3>
                             <TextField className='etudiantSearch'
