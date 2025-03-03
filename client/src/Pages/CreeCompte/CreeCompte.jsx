@@ -26,8 +26,8 @@ export const CreeCompte = () => {
             return
         }
         if (Object.values(newUser).some(value => value === '') || confirmPassword === '') {
-            alert("Veuillez remplir tous les champs !");
-            return;
+            alert("Veuillez remplir tous les champs !")
+            return
         }
 
         console.log(newUser)
@@ -41,7 +41,7 @@ export const CreeCompte = () => {
             .then(response => response.json())
             .then(data => console.log(data))
             .catch(error => console.error(error))
-    };
+    }
 
     return (
         <>
@@ -56,7 +56,7 @@ export const CreeCompte = () => {
                     <TextField onChange={(e) => handleForm(e)} id="confirmPassword" label="Confirmer mot de passe:" variant="standard" type="password" required />
                 </div>
 
-                <Button type='submit' onClick={createUser} variant="contained">Crée</Button>
+                <Button onClick={createUser} variant="contained">Crée</Button>
             </div>
         </>
     )
