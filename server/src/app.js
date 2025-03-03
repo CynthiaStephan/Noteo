@@ -8,6 +8,7 @@ const cookieParser = require('cookie-parser');
 
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
+const questionnaireRoutes = require('./routes/questionnaireRoutes')
 
 const app = express();
 
@@ -29,7 +30,11 @@ app.use(express.urlencoded({ extended: true }));
 // Adding security headers with Helmet
 app.use(helmet());
 // Enabling CORS for cross-origin requests
-app.use(cors());
+app.use(cors({
+  origin: 'http://localhost:5173', // Autorise uniquement les requêtes provenant de cette origine
+  credentials: true // Autorise l'envoi des cookies entre le frontend et le backend
+}));
+
 // Initializing Passport for authentication
 app.use(passport.initialize());
 
@@ -40,6 +45,7 @@ app.get('/', (req, res) => {
 // Registering route modules for handling specific API paths
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
+app.use('/questionnaire', questionnaireRoutes);
 
 // Exporting the configured Express app for use in other files
 module.exports = app;
