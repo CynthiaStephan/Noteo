@@ -1,17 +1,23 @@
-const AnswerModel = require('../models/answerModel');
-const QuestionModel = require('../models/questionModel');
-const QuestionnaireModel = require('../models/questionnaireModel');
 const UserModel = require('../models/userModel');
 
-const sequelize = require('../database');
-const bcrypt = require('bcrypt');
-
 class UserController {
+    async getUserById(req, res) {
+        res.json({message: "GetUserById test reussi"});
+    };
     async getUsers(req, res) {
         res.json({message : "GetUsers test reussi"});
     };
     async createUser(req, res) {
-        res.json({message: "createUser test reussi"});
+        const user = await UserModel.create({
+            first_name: "test",
+            last_name: "test",
+            email: "teihihihst@gmail.com",
+            password: "test"
+        });
+        res.json({
+            message: "createUser test reussi",
+            user: user
+        });
     };
     async updateUser(req, res) {
         res.json({message: "updateUser test reussi"});
