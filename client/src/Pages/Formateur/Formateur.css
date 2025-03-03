@@ -1,0 +1,108 @@
+*{margin: 0;
+padding: 0;}
+
+p{
+    font-size: 18px
+}
+
+.mobileDisparition{
+    display: flex;
+}
+
+.formateur{
+    display: flex;
+    flex-direction: row;
+    width: 80vw;
+    margin: 24px auto;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.formateur .filtreListe{
+    display: flex;
+    gap:24px;
+    margin:0
+    
+}
+
+.formateur button{
+    text-align: center;
+    width: 259px;
+    height: 48px;
+    background-color: white;
+    border-color: black;
+    border-radius: 8px;
+    border-width: 1px;
+}
+
+.tabeauEleve{
+    border-style: solid;
+    border-color: black;
+    width: 80vw;
+    height: auto;
+    margin: 24px auto;
+}
+
+.tabeauEleve .categorie{
+    border-style: solid;
+    border-color: black;
+    height: 56px;
+}
+
+.tabeauEleve .liste{
+    height: 56px;
+    display: flex;
+    gap: 1vw;
+}
+
+.tabeauEleve .liste p{
+    margin: auto 0;
+    width: 15vw;
+}
+
+.tabeauEleve .listeEleve{
+    border-style: solid;
+    border-color: black;
+    min-height: 200px;
+    flex-direction: column;
+    gap: 15px;
+    height: auto;
+    display: flex;
+}
+
+.tabeauEleve .listeEleve .liste{
+    height: 20px;
+}
+
+.tabeauEleve .liste .mobileDisparition{
+    width: 30vw;
+}
+
+@media (max-width: 670px) {
+    .tabeauEleve{
+        width: 90vw;
+        margin: 15px auto;
+    }
+    .mobileDisparition{
+        display: none;
+    }
+    .tabeauEleve .liste p{
+        width: 29vw;
+    }
+    .formateur{
+        width: 90vw;
+        margin: 15px auto 0 auto;
+        flex-direction: column-reverse;
+    }
+    .formateur button{
+        height: 36px;
+    }
+    .formateur .filtreListe{
+        display: flex;
+        margin: 40px 0 0 0;
+        gap: 0;
+
+        
+    }
+    
+ }
