@@ -13,6 +13,7 @@ services:
       database:
         condition: service_healthy
     environment:
+      JWT_SECRET: ${JWT_SECRET}
       PORT: ${SERVER_PORT}
       DATABASE_URL: mysql://${DATABASE_USER}:${DATABASE_PASSWORD}@database/${DATABASE_NAME}
   
