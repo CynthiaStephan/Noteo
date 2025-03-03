@@ -28,3 +28,15 @@ ul, li{
     justify-content: space-between;
     margin: 10px 0;
 }
+
+@media (max-width: 670px) {
+    .divL {
+        border-right: none;
+        width: 100vw;
+        height: 90vh;
+    }
+    .divR {
+        width: 100vw;
+        height: 90vh;
+    }
+ }
