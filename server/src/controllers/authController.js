@@ -15,7 +15,7 @@ class AuthController{
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 return res.status(401).json({ message: "Wrong email or password" });
             }
-
+            console.log("JWT_SECRET:", process.env.JWT_SECRET);
             const token = jwt.sign({ username: user.username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '2h' });
             console.log(`Token: ${token}`)
             res.cookie("token", token, {
@@ -35,10 +35,33 @@ class AuthController{
 
     async register(req, res){
 
-        const { email, password } = req.body;
-        try {
+        const { first_name, last_name, email, password, role  } = req.body;
 
-            
+        try {
+            const saltRounds = 10;
+
+            let hashedPassword = "";
+            if (password) {
+                hashedPassword = await bcrypt.hash(password, saltRounds);
+            }
+
+            const newUser = await UserModel.create({ 
+                    first_name: first_name,
+                    last_name: last_name,
+                    email: email,
+                    password: hashedPassword,
+                    role: role,
+                },
+            );
+            let newuserData = {
+                user_id: newUser.dataValues.user_id,
+                first_name: newUser.dataValues.first_name,
+                last_name: newUser.dataValues.last_name,
+                email: newUser.dataValues.email,
+                role: newUser.dataValues.role
+
+            }
+            res.status(201).json(newuserData)
             
         } catch (error) {
             res.status(500).json({ error : error.message });
