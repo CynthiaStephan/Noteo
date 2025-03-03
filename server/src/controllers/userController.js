@@ -6,8 +6,27 @@ class UserController {
     async getUserById(req, res) {
         res.json({message: "GetUserById test reussi"});
     };
+
     async getUsers(req, res) {
-        res.json({message : "GetUsers test reussi"});
+        try {
+            const users = await UserModel.findAll();
+            console.log(users);
+            if(!users || users.length === 0){
+                return res.json(message = "Pas de users trouvé");
+            }
+            
+            /*const usersData = {
+                user_id: users.dataValues.user_id,
+                first_name: users.dataValues.first_name,
+                last_name: users.dataValues.last_name,
+                email: users.dataValues.email,
+                role: users.dataValues.role
+            };
+            */
+            res.status(200).json(users);
+        } catch (error) {
+            res.status(500).json({error: error.message})
+        }
     };
     async createUser(req, res) {
         const { first_name, last_name, email, password, role} = req.body;
