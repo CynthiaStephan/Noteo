@@ -13,6 +13,7 @@ const Questionnaire = sequelize.define('questionnaire', {
     },
     description: {
         type: DataTypes.STRING(500),
+        allowNull: true,
     },
 },{
     tableName: 'questionnaire',

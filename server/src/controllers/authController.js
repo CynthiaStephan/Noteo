@@ -15,11 +15,20 @@ class AuthController{
                 return res.status(401).json({ message: "Wrong email or password" });
             }
             const token = jwt.sign({ username: user.username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '2h' });
-            
+            console.log(token)
             res.cookie("token", token, {
-                httpOnly: true,
-                secure: false,
-              });
+                httpOnly: true, 
+                secure: false, 
+                sameSite: "Strict"
+
+            });
+
+            res.cookie("testCookie", "test", {
+                httpOnly: true, 
+                secure: false, 
+                sameSite: "Strict"
+
+            });
             res.json({
                 id: user.user_id,
                 role: user.role,
