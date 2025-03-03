@@ -19,7 +19,7 @@
         text-align: center;
     }
     
-    .pageFrom div{
+    .formList{
         width: 50vw;
         gap: 24px;
         display: flex;
@@ -32,6 +32,7 @@
         height: 64px;
         margin-top: 48px;
         background-color: white;
+        color: black;
         border: none;
         border-radius: 100px;
     }
