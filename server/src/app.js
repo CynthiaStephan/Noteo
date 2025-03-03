@@ -7,6 +7,7 @@ const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
 const userRoutes = require('./routes/userRoutes');
+const authRoutes = require('./routes/authRoutes');
 
 const app = express();
 
@@ -36,9 +37,9 @@ app.get('/', (req, res) => {
     res.json({ message: 'Test réussi !' });
 });
 
-app.use('/user', userRoutes);
 // Registering route modules for handling specific API paths
 app.use('/auth', authRoutes);
+app.use('/user', userRoutes);
 
 // Exporting the configured Express app for use in other files
 module.exports = app;
