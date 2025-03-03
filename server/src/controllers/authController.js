@@ -19,7 +19,6 @@ class AuthController{
             res.cookie("token", token, {
                 httpOnly: true,
                 secure: false,
-                sameSite: 'Strict',
               });
             res.json({
                 id: user.user_id,
