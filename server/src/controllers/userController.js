@@ -9,20 +9,13 @@ class UserController {
 
     async getUsers(req, res) {
         try {
-            const users = await UserModel.findAll();
+            const users = await UserModel.findAll({
+                attributes: { exclude: "password"}
+            });
             console.log(users);
             if(!users || users.length === 0){
                 return res.json(message = "Pas de users trouvé");
             }
-            
-            /*const usersData = {
-                user_id: users.dataValues.user_id,
-                first_name: users.dataValues.first_name,
-                last_name: users.dataValues.last_name,
-                email: users.dataValues.email,
-                role: users.dataValues.role
-            };
-            */
             res.status(200).json(users);
         } catch (error) {
             res.status(500).json({error: error.message})
