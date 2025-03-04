@@ -233,8 +233,8 @@ export const AjoutQuestion = () => {
     return (
         <>
             <NavBase />
-            <section className='sectionQuestionnaire' id='flexL'>
-                <div className='divL'>
+            <section className='sectionQuestionnaire'>
+                <div className='divL flexL'>
                     <div className='nomQuestion'>
                         <h2>Crée questionnaire</h2>
                         <TextField onChange={(e) => handleTitleChange(e.target.value)} id="outlined-basic" label="Nom questionnaire:" variant="outlined" required />
@@ -267,7 +267,7 @@ export const AjoutQuestion = () => {
                     </div>
                 </div>
 
-                <div className='divR' id='flexR'>
+                <div className='divR flexR'>
                     <div className='selectFormation'>
                         <h3>Sélection formation</h3>
                         <FormControl className='listFormation'>
@@ -291,7 +291,7 @@ export const AjoutQuestion = () => {
                         </FormControl>
                     </div>
 
-                    <div className='selectEtudiant' >
+                    <div className='selectEtudiant'>
                         <div className='etudiantSearchDiv'>
                             <h3>Sélection étudiant</h3>
                             <TextField className='etudiantSearch'
