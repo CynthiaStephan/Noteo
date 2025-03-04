@@ -19,14 +19,11 @@ export const CreeCompte = () => {
         }
     }
 
-    const createUser = () => {
+    const createUser = (e) => {
+        e.preventDefault()
 
         if (newUser.password !== confirmPassword) {
             alert("Les mots de passe ne correspondent pas !")
-            return
-        }
-        if (Object.values(newUser).some(value => value === '') || confirmPassword === '') {
-            alert("Veuillez remplir tous les champs !")
             return
         }
 
@@ -46,7 +43,7 @@ export const CreeCompte = () => {
     return (
         <>
             <NavCree />
-            <div className='pageFrom'>
+            <form onSubmit={(e) => {createUser(e)}} className='pageFrom'>
                 <h2>Crée un compte</h2>
                 <div className="formList">
                     <TextField onChange={(e) => handleForm(e)} id="last_name" label="Nom:" variant="standard" required />
@@ -56,8 +53,8 @@ export const CreeCompte = () => {
                     <TextField onChange={(e) => handleForm(e)} id="confirmPassword" label="Confirmer mot de passe:" variant="standard" type="password" required />
                 </div>
 
-                <Button onClick={createUser} variant="contained">Crée</Button>
-            </div>
+                <Button type="submit" variant="contained">Crée</Button>
+            </form>
         </>
     )
 }

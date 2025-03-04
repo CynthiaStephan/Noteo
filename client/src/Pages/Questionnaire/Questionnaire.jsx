@@ -118,15 +118,15 @@ export const Questionnaire = () => {
 
                     <div className='listQuestionnaire'>
                         <ul className='questionnaireListe'>
-                            <Button id='questionnaireBtn' onClick={() => console.log('click')}>questionnaire 1</Button>
-                            <Button id='questionnaireBtn' onClick={() => console.log('click')}>questionnaire 2</Button>
-                            <Button id='questionnaireBtn' onClick={() => console.log('click')}>questionnaire 3</Button>
-                            <Button id='questionnaireBtn' onClick={() => console.log('click')}>questionnaire 4</Button>
-                            <Button id='questionnaireBtn' onClick={() => console.log('click')}>questionnaire 5</Button>
-                            <Button id='questionnaireBtn' onClick={() => console.log('click')}>questionnaire 6</Button>
-                            <Button id='questionnaireBtn' onClick={() => console.log('click')}>questionnaire 7</Button>
-                            <Button id='questionnaireBtn' onClick={() => console.log('click')}>questionnaire 8</Button>
-                            <Button id='questionnaireBtn' onClick={() => console.log('click')}>questionnaire 9</Button>
+                            <Button onClick={() => console.log('click')}>questionnaire 1</Button>
+                            <Button onClick={() => console.log('click')}>questionnaire 2</Button>
+                            <Button onClick={() => console.log('click')}>questionnaire 3</Button>
+                            <Button onClick={() => console.log('click')}>questionnaire 4</Button>
+                            <Button onClick={() => console.log('click')}>questionnaire 5</Button>
+                            <Button onClick={() => console.log('click')}>questionnaire 6</Button>
+                            <Button onClick={() => console.log('click')}>questionnaire 7</Button>
+                            <Button onClick={() => console.log('click')}>questionnaire 8</Button>
+                            <Button onClick={() => console.log('click')}>questionnaire 9</Button>
                         </ul>
                     </div>
                 </div>

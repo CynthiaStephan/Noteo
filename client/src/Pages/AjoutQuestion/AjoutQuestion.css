@@ -15,9 +15,9 @@
     width: 100%;
 }
 
-.addNewQuestion{
+.addNewQuestion {
     display: flex;
-    
+
 }
 
 .btnCree {
@@ -57,27 +57,31 @@
     gap: 2vw;
 }
 
-@media (max-width: 1050px) {
-    /*changé les icone des bouton*/
-
-}
 
 @media (max-width: 670px) {
-    #flexL {
-        display: flex;
-        flex-direction: column;
+    .sectionQuestionnaire {
+        flex-direction: column-reverse;
     }
-    #flexR {
-        display: flex;
-        flex-direction: column;
+
+    .flexL {
+        margin-bottom: 7.5vh;
     }
+
+    .flexR {
+        border-top: 1px solid black ;
+        padding-top: 1vh;
+    }
+
     .addNewQuestion {
-        display: flex;   
+        display: flex;
         justify-content: center;
     }
+
     .btnCree {
-    display: flex;
-    justify-content: center;}
+        display: flex;
+        justify-content: center;
+    }
+
     .nomQuestion {
         max-width: 98vw;
     }
