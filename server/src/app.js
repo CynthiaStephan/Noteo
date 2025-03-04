@@ -13,7 +13,7 @@ const questionnaireRoutes = require('./routes/questionnaireRoutes')
 const app = express();
 
 const corsOptions = {
-  origin: ["http://localhost:3000", "http://127.0.0.1:3000"],
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
   methods: "GET,POST,PUT,DELETE",
   allowedHeaders: "Content-Type",
   credentials: true
@@ -31,7 +31,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(helmet());
 // Enabling CORS for cross-origin requests
 app.use(cors({
-  origin: 'http://localhost:5173', // Autorise uniquement les requêtes provenant de cette origine
+  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'], // Autorise uniquement les requêtes provenant de cette origine
   credentials: true // Autorise l'envoi des cookies entre le frontend et le backend
 }));
 

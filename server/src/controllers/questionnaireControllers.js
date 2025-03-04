@@ -57,6 +57,21 @@ class QuestionnaireController{
         }
     };
 
+    async updateQuestionnaire(req, res){
+        const { questionnaire_id } = req.params;
+        const { title } = req.body;
+        try{
+            const updatedQuestionnaire = await QuestionnaireModel.update({title:title},{ where: {questionnaire_id: questionnaire_id} });
+
+            if(updatedQuestionnaire === 0){
+                return res.status(404).json({ error : 'Questionnaire not updated'});
+            }
+            res.status(200).json(updatedQuestionnaire)
+        } catch (error) {
+            res.status(500).json({ error : error.message });
+        }
+    };
+
     async deleteQuestionnaire(req, res){
         const { questionnaire_id} = req.params;
 
@@ -86,7 +101,7 @@ class QuestionnaireController{
         } catch (error) {
             res.status(500).json({ error : error.message });
         }
-    }
+    };
 }
 
 module.exports = new QuestionnaireController
