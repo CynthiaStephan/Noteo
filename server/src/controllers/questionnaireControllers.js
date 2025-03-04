@@ -1,4 +1,3 @@
-const { where } = require('../database');
 const QuestionnaireModel = require('../models/questionnaireModel');
 
 class QuestionnaireController{
@@ -35,6 +34,7 @@ class QuestionnaireController{
     };
 
     async createQuestionnaire(req, res){
+        const { user_id } = req.params;
         const { title } = req.body;
 
         try {
@@ -44,6 +44,7 @@ class QuestionnaireController{
 
             const newQuestionnaire = await QuestionnaireModel.create({
                 title : title,
+                user_id : user_id,
             });
 
             if (!newQuestionnaire || newQuestionnaire.length === 0){
