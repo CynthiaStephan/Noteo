@@ -80,5 +80,5 @@ Développé dans le cadre d'un projet pédagogique par :
 [Jordan](https://github.com/jordanbayer) `Frontend`  
 [Malcom](https://github.com/Malcolm-noel) `Frontend`  
 [Pierre-Marie](https://github.com/DovaaCode) `Backend`  
-[Julie](#) `Backend`  
+[Julie](https://github.com/juliemeurisse) `Backend`  
 [Cynthia](https://github.com/CynthiaStephan) `Backend`, `Gestion de projet`
