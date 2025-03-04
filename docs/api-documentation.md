@@ -111,7 +111,7 @@ Aucune donnée nécessaire dans le corps de la requête.
 ### 📝 **3. Questionnaires**
 
 #### 🔹 **Obtenir tous les questionnaires**
-- **URL** : `/questionnaires`
+- **URL** : `/questionnaire`
 - **Méthode** : `GET`
 - **Description** : Récupère la liste de tous les questionnaires.
 
@@ -143,7 +143,7 @@ Aucune donnée nécessaire dans le corps de la requête.
 ---
 
 #### 🔹 **Obtenir un questionnaire par ID**
-- **URL** : `/questionnaires/:questionnaire_id`
+- **URL** : `/questionnaire/:questionnaire_id`
 - **Méthode** : `GET`
 - **Description** : Récupère un questionnaire spécifique par son identifiant.
 
@@ -168,7 +168,7 @@ Aucune donnée nécessaire dans le corps de la requête.
 ---
 
 #### 🔹 **Créer un questionnaire**
-- **URL** : `/questionnaires/:user_id`
+- **URL** : `/questionnaire/:user_id`
 - **Méthode** : `POST`
 - **Description** : Crée un nouveau questionnaire pour un utilisateur spécifique.
 
@@ -200,7 +200,7 @@ Aucune donnée nécessaire dans le corps de la requête.
 ---
 
 #### 🔹 **Mettre à jour un questionnaire**
-- **URL** : `/questionnaires/update:questionnaire_id`
+- **URL** : `/questionnaire/update:questionnaire_id`
 - **Méthode** : `PUT`
 - **Description** : Met à jour le titre d'un questionnaire existant par son identifiant.
 
@@ -232,7 +232,7 @@ Aucune donnée nécessaire dans le corps de la requête.
 ---
 
 #### 🔹 **Supprimer un questionnaire**
-- **URL** : `/questionnaires/:questionnaire_id`
+- **URL** : `/questionnaire/:questionnaire_id`
 - **Méthode** : `DELETE`
 - **Description** : Supprime un questionnaire par son identifiant.
 
@@ -266,7 +266,7 @@ Voici la documentation mise à jour avec "question" à la place de "description"
 ### 📝 **3. Questions**
 
 #### 🔹 **Obtenir toutes les questions**
-- **URL** : `/questions`
+- **URL** : `/question`
 - **Méthode** : `GET`
 - **Description** : Récupère la liste de toutes les questions dans le système. **Ceci n'est pas une question**, mais une demande pour obtenir la collection complète de questions.
 
@@ -296,7 +296,7 @@ Voici la documentation mise à jour avec "question" à la place de "description"
 ---
 
 #### 🔹 **Obtenir une question par ID**
-- **URL** : `/questions/:question_id`
+- **URL** : `/question/:question_id`
 - **Méthode** : `GET`
 - **Description** : Récupère une question spécifique par son identifiant. **Ceci n'est pas une question**, mais une requête pour obtenir une question par son ID.
 
@@ -320,7 +320,7 @@ Voici la documentation mise à jour avec "question" à la place de "description"
 ---
 
 #### 🔹 **Obtenir des questions par questionnaire**
-- **URL** : `/questions/questionnaire`
+- **URL** : `/question/questionnaire`
 - **Méthode** : `POST`
 - **Description** : Récupère toutes les questions associées à un questionnaire spécifique. **Ceci n'est pas une question**, mais une action qui récupère les questions d'un questionnaire en particulier.
 
@@ -364,7 +364,7 @@ Voici la documentation mise à jour avec "question" à la place de "description"
 ---
 
 #### 🔹 **Créer une nouvelle question**
-- **URL** : `/questions`
+- **URL** : `/question`
 - **Méthode** : `POST`
 - **Description** : Crée une nouvelle question dans le système. **Ceci n'est pas une question**, mais une requête pour ajouter une nouvelle question à la base de données.
 
@@ -395,7 +395,7 @@ Voici la documentation mise à jour avec "question" à la place de "description"
 ---
 
 #### 🔹 **Mettre à jour une question**
-- **URL** : `/questions/update:question`
+- **URL** : `/question/update:question`
 - **Méthode** : `PUT`
 - **Description** : Met à jour une question existante dans le système par son ID. **Ceci n'est pas une question**, mais une requête pour mettre à jour la question en fonction de l'ID fourni.
 
@@ -426,7 +426,7 @@ Voici la documentation mise à jour avec "question" à la place de "description"
 ---
 
 #### 🔹 **Supprimer une question**
-- **URL** : `/questions/:question_id`
+- **URL** : `/question/:question_id`
 - **Méthode** : `DELETE`
 - **Description** : Supprime une question existante du système par son ID. **Ceci n'est pas une question**, mais une requête pour supprimer la question spécifiée.
 

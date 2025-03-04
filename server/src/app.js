@@ -8,7 +8,8 @@ const cookieParser = require('cookie-parser');
 
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
-const questionnaireRoutes = require('./routes/questionnaireRoutes')
+const questionnaireRoutes = require('./routes/questionnaireRoutes');
+const questionRoutes = require('./routes/questionRoutes');
 
 const app = express();
 
@@ -46,6 +47,7 @@ app.get('/', (req, res) => {
 app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/questionnaire', questionnaireRoutes);
+app.use('/question', questionRoutes);
 
 // Exporting the configured Express app for use in other files
 module.exports = app;
