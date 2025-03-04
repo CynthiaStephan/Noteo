@@ -7,5 +7,8 @@ router.get('/', QuestionnaireController.getAllQuestionnaires);
 router.get('/:questionnaire_id', QuestionnaireController.getQuestionnaireById);
 router.post('/', QuestionnaireController.createQuestionnaire);
 router.delete('/:questionnaire_id', QuestionnaireController.deleteQuestionnaire);
+router.put('update:questionnaire_id', QuestionnaireController.updateQuestionnaire);
+
+
 
 module.exports = router
