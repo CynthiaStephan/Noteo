@@ -18,7 +18,6 @@ class UserController {
             res.status(500).json({error: error.message});
         }
     };
-
     async getUsers(req, res) {
         try {
             const users = await UserModel.findAll({
@@ -63,10 +62,49 @@ class UserController {
         }
     };
     async updateUser(req, res) {
-        res.json({message: "updateUser test reussi"});
+        const { user_id } = req.params;
+        const { first_name, last_name, email, password, role } = req.body;
+        try {
+            const saltRounds = 10;
+            
+            let hashedPassword = "";
+            if (password) {
+                hashedPassword = await bcrypt.hash(password, saltRounds);
+            };
+            
+            const updatedData = {};
+            if (first_name) updatedData.first_name = first_name;
+            if (last_name) updatedData.last_name = last_name;
+            if (email) updatedData.email = email;
+            if (password) updatedData.password = hashedPassword;
+            if (role) updatedData.role = role;
+
+            const [updatedUser] = await UserModel.update(updatedData, { where: {user_id: user_id} });
+            console.log(updatedUser);
+            
+            if (updatedUser === 0) {
+                return res.status(404).json({error: "Aucun utilisateur trouvé"});
+            };
+            res.status(200).json({message: "Utilisateur mis à jour"});
+        } catch (error) {
+            res.status(500).json({error: error.message});
+        };
     };
-    async deleteUser(req, res) {
-        res.json({message: "deleteUser test reussi"});
+    async deleteUserById(req, res) {
+        const { user_id } = req.params;
+
+        try {
+            const deletedUser = await UserModel.destroy({where: {user_id: user_id} });
+            console.log(deletedUser);
+            
+            
+            if (deletedUser === 0) {
+                return res.status(404).json({ error: "Aucun utilisateur trouvé"});
+            }
+            res.status(200).json({message: "Utilisateur supprimé"});
+        } catch (error) {
+            res.status(500).json({error: error.message});
+        }
     };
 };
 
