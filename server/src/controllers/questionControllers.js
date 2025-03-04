@@ -55,15 +55,15 @@ class QuestionController{
         }
     
         async createQuestion(req, res){
-            const { description } = req.body;
+            const { question } = req.body;
     
             try {
-                if(description.length === 0){
-                    return res.status(404).json({ error: `Question's description can't be empty`});
+                if(question.length === 0){
+                    return res.status(404).json({ error: `Question's question can't be empty`});
                 }
     
                 const newQuestion = await QuestionModel.create({
-                    description : description,
+                    question : question,
                 });
     
                 if (!newQuestion || newQuestion.length === 0){
@@ -79,9 +79,9 @@ class QuestionController{
     
         async updateQuestion(req, res){
             const { question_id } = req.params;
-            const { description } = req.body;
+            const { question } = req.body;
             try{
-                const updatedQuestion = await QuestionModel.update({description:description},{ where: {question_id: question_id} });
+                const updatedQuestion = await QuestionModel.update({question:question},{ where: {question_id: question_id} });
     
                 if(updatedQuestion === 0){
                     return res.status(404).json({ error : 'Question not updated'});
