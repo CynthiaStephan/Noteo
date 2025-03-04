@@ -21,6 +21,6 @@ router.put('/:user_id', userController.updateUser);
 
 // Supprimer un utilisateur
 // Admin
-router.delete('/:user_id', userController.deleteUser);
+router.delete('/:user_id', userController.deleteUserById);
 
 module.exports = router;
