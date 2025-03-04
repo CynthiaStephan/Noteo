@@ -6,10 +6,13 @@ const cors = require('cors');
 const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
+// Routes imports
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
 const questionnaireRoutes = require('./routes/questionnaireRoutes');
 const questionRoutes = require('./routes/questionRoutes');
+const answerRoutes = require('./routes/answerRoutes')
+
 
 const app = express();
 
@@ -48,6 +51,7 @@ app.use('/auth', authRoutes);
 app.use('/user', userRoutes);
 app.use('/questionnaire', questionnaireRoutes);
 app.use('/question', questionRoutes);
+app.use('/answer', answerRoutes);
 
 // Exporting the configured Express app for use in other files
 module.exports = app;
