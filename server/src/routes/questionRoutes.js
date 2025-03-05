@@ -9,4 +9,4 @@ router.post('/', QuestionController.createQuestion);
 router.delete('/:question_id', QuestionController.deleteQuestion);
 router.put('update/:question_id', QuestionController.updateQuestion);
 
-module.exports = router
+module.exports = router;

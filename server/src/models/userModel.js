@@ -47,7 +47,7 @@ User.associate = (models) => {
         through: 'training_user',
         foreignKey: 'user_id'
     });
-    User.hasHooks(models.answer, {
+    User.hasMany(models.answer, {
         foreignKey:'user_id'
     });
     User.belongsToMany(models.questionnaire, {

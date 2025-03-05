@@ -1,6 +1,9 @@
 const AnswerModel = require('../models/answerModel');
-const UserModel = require ('../models/userModel.js');
-const QuestionModel = require('../models/questionModel.js');
+const UserModel = require ('../models/userModel');
+const QuestionModel = require('../models/questionModel');
+const QuestionnaireModel = require('../models/questionnaireModel');
+const UserModel = require('../models/userModel');
+const { model } = require('../database.js');
 
 class AnswerController{
     
@@ -39,7 +42,60 @@ class AnswerController{
         const { questionnaire_id } = req.params;
         const { user_id } = req.body;
 
-    }
+        try{
+            const questionnaire = await QuestionnaireModel.findByPk(questionnaire_id);
+            if (!questionnaire){
+                return res.status(404).json({ error: `Questionnaire not found`});
+            }
+            const user = await User.findByPk(user_id);
+            if (!user){
+                return res.status(404).json({ error: `User not found`});
+            }
+            
+            const userAnswers = await UserModel.findOne({
+                where: { user_id: user_id },
+                include: [
+                    {
+                        model: QuestionnaireModel,
+                        through: {
+                            model: model.questionnaire_user,
+                            where: { questionnaire_id: questionnaire_id },
+                        },
+                        include: [
+                            {
+                                model: QuestionModel,
+                                include: [
+                                    {
+                                        model: AnswerModel,
+                                        through: {
+                                            model: model.answer_question,
+                                        }
+                                    }
+                                ]
+                            }
+                        ]
+                    }
+                ]
+            });
+
+            if (!userAnswers) {
+                return res.status(404).json({ error: 'No answers found for this user in the given questionnaire' });
+            }
+
+            const answers = userAnswers.questionnaires[0].questions.map(question => {
+                return {
+                    question: question.question,
+                    answers: question.answers.map(answer => answer.answer)
+                };
+            });
+    
+            res.status(200).json({ questionnaireTitle: questionnaire.title, answers });
+
+
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    };
 
     async createAnswer(req, res){
         const { question_id } = req.params;
@@ -51,7 +107,7 @@ class AnswerController{
             }
             const question = await QuestionModel.findByPk(question_id);
             if (!question){
-                return res.status(404).json({ error: `Question not found`})
+                return res.status(404).json({ error: `Question not found`});
             }
 
             const newanswer = await AnswerModel.create({
@@ -79,7 +135,7 @@ class AnswerController{
             if(updatedanswer === 0){
                 return res.status(404).json({ error : 'answer not updated'});
             }
-            res.status(200).json(updatedanswer)
+            res.status(200).json(updatedanswer);
         } catch (error) {
             res.status(500).json({ error : error.message });
         }
@@ -94,7 +150,7 @@ class AnswerController{
 
             // Verify that we don't delete something that doesn't exist
             if(!answerToDelete || answerToDelete.length === 0){
-                return res.status(404).json({ message: `Can't delete something that doesn't exist`})
+                return res.status(404).json({ message: `Can't delete something that doesn't exist`});
             }
             // Deleting the answer
             const toDelete = await AnswerModel.destroy({

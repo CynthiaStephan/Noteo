@@ -11,4 +11,4 @@ router.put('/update/:questionnaire_id', QuestionnaireController.updateQuestionna
 
 
 
-module.exports = router
+module.exports = router;
