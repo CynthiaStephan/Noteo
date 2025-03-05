@@ -5,6 +5,8 @@ const router = Router();
 
 router.get('/', AnswerController.getAllAnswers);
 router.get('/:answer_id', AnswerController.getAnswerById);
-router.post('/', AnswerController.createAnswer);
+router.post('/:question_id', AnswerController.createAnswer);
 router.delete('/:answer_id', AnswerController.deleteAnswer);
 router.put('/update/:answer_id', AnswerController.updateAnswer);
+
+module.exports = router
