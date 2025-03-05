@@ -1,5 +1,5 @@
 /** import des different modules */
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { NavBase } from '../../Nav/NavBase';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
@@ -20,6 +20,8 @@ import ListItemIcon from '@mui/material/ListItemIcon';
 import Paper from '@mui/material/Paper';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Autocomplete from '@mui/material/Autocomplete';
+import Alert from '@mui/material/Alert';
+import Collapse from '@mui/material/Collapse';
 
 /** import css */
 import './AjoutQuestion.css';
@@ -28,9 +30,33 @@ import './AjoutQuestion.css';
 export const AjoutQuestion = () => {
     /** gestions ajout questions */
 
-    const [question, setQuestion] = useState([]) //recuperes et stock la liste des questions
-    const [title, setTitle] = useState([{ titre: '' }]) //recuperes et stock le titre du questionnaire
-    const [newQuestion, setNewQuestion] = useState('')
+    const [question, setQuestion] = useState([]) //stock la liste des questions
+    const [title, setTitle] = useState([{ titre: '' }]) //stock le titre du questionnaire
+    const [listeQuestions, setListeQuestions] = useState([]) //stock la liste des questions
+    const [newQuestion, setNewQuestion] = useState('') //stock la nouvelle question crée
+    const newQuestionRef = useRef(null) //recuperes la ref de la nouvelle question crée pour pouvoir supprimer le champs de text
+
+    /** geres les alert en cas de succes */
+    const [addSuccess, setAddSuccess] = useState(false)
+    const [addSuccessMessage, setAddSuccessMessage] = useState('')
+    useEffect(() => {
+        if (addSuccess) {
+            setTimeout(() => {
+                setAddSuccess(false);
+            }, 3000);
+        }
+    }, [addSuccess]);
+
+    /** geres les alert en cas d'erreur'*/
+    const [addError, setAddError] = useState(false)
+    const [addErrorMessage, setAddErrorMessage] = useState('')
+    useEffect(() => {
+        if (addError) {
+            setTimeout(() => {
+                setAddError(false);
+            }, 3000);
+        }
+    }, [addError]);
 
     /** rajoute un champ de text a remplir */
     const addQuestion = () => {
@@ -57,26 +83,69 @@ export const AjoutQuestion = () => {
         setTitle([{ titre: value }])
     }
 
+    /** recupers la valeur du champ de nouvelle question */
     const handleNewQuestionChange = (value) => {
         setNewQuestion(value)
     }
 
-    const createNewQuestion = () => {
-        console.log(newQuestion)
+    /** recuperes dans la base de donnée et affiche la liste des questions dans les select */
+    useEffect(() => {
+        fetch(`http://localhost:5000/question/`, {
+            method: "GET",
+        })
+            .then(response => response.json())
+            .then(data => {
+                setListeQuestions(data.map(q => q.question))
+            })
+            .catch(error => console.error(error))
+    }, [newQuestion == ''])
+
+    const createNewQuestion = (e) => {
+        e.preventDefault()
+        console.log({ question: newQuestion })
+
+        fetch(`http://localhost:5000/question/`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ question: newQuestion })
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                if (data.error) {
+                    setAddErrorMessage(data.error)
+                    setAddError(true)
+                } else {
+                    newQuestionRef.current.value = ''
+                    setNewQuestion('')
+                    setAddSuccessMessage('Question ajouter.')
+                    setAddSuccess(true)
+                }
+            })
+            .catch(error => console.error(error))
     }
 
     /** gestion du bouton d'envoie */
     const createQuestionnaire = () => {
         /** verifie que les champs de text son bien remplie et renvoie une erreur si il y en a un vide */
-        const questionEmpty = question.some((question) => question.text.trim() == '');
+        const questionEmpty = question.some((question) => question.text.trim() == '')
         const titleEmpty = title.some((title) => title.titre == '')
 
         if (questionEmpty || titleEmpty) {
-            alert("Veuillez remplir tous les champs avant d'envoyer !");
+            setAddErrorMessage("Veuillez remplir tous les champs avant d'envoyer !")
+            setAddError(true)
             return;
         }
         if (question.length === 0) {
-            alert("Veuillez ajouter au moins une question avant d'envoyer !");
+            setAddErrorMessage("Veuillez ajouter au moins une question avant d'envoyer !")
+            setAddError(true)
+            return;
+        }
+        if (right.length === 0) {
+            setAddErrorMessage("Veuillez atruibuer le questionnaire à au moin un étudiant !")
+            setAddError(true)
             return;
         }
 
@@ -86,6 +155,8 @@ export const AjoutQuestion = () => {
             question: question
         }
 
+        setAddSuccessMessage('Questionnaire crée.')
+        setAddSuccess(true)
         console.log(questionnaire)
         console.log(right.map(index => listEtudiant[index]))
     }
@@ -98,23 +169,36 @@ export const AjoutQuestion = () => {
         'ERA'
     ]
     let listEtudiant = [
-    { "nom": "Dupont", "prenom": "Jean", "formation": "Front" },
-    { "nom": "Martin", "prenom": "Sophie", "formation": "Back" },
-    { "nom": "Lemoine", "prenom": "Paul", "formation": "Cda" },
-    { "nom": "Durand", "prenom": "Emma", "formation": "ERA" },
-    { "nom": "Bernard", "prenom": "Lucas", "formation": "Front" },
-    { "nom": "Petit", "prenom": "Camille", "formation": "Back" },
-    { "nom": "Robert", "prenom": "Nicolas", "formation": "Cda" },
-    { "nom": "Richard", "prenom": "Elodie", "formation": "ERA" },
-    { "nom": "Simon", "prenom": "Julien", "formation": "Front" },
-    { "nom": "Lefevre", "prenom": "Alice", "formation": "Back" },
-    { "nom": "Morel", "prenom": "Thomas", "formation": "Cda" },
-    { "nom": "Girard", "prenom": "Laura", "formation": "ERA" },
-    { "nom": "Andre", "prenom": "Maxime", "formation": "Front" },
-    { "nom": "Lambert", "prenom": "Chloe", "formation": "Back" },
-    { "nom": "Bonnet", "prenom": "Antoine", "formation": "Cda" },
-    { "nom": "Francois", "prenom": "Julie", "formation": "ERA" }
+        { "last_name": "Dupont", "first_name": "Jean", "formation": "Front" },
+        { "last_name": "Martin", "first_name": "Sophie", "formation": "Back" },
+        { "last_name": "Lemoine", "first_name": "Paul", "formation": "Cda" },
+        { "last_name": "Durand", "first_name": "Emma", "formation": "ERA" },
+        { "last_name": "Bernard", "first_name": "Lucas", "formation": "Front" },
+        { "last_name": "Petit", "first_name": "Camille", "formation": "Back" },
+        { "last_name": "Robert", "first_name": "Nicolas", "formation": "Cda" },
+        { "last_name": "Richard", "first_name": "Elodie", "formation": "ERA" },
+        { "last_name": "Simon", "first_name": "Julien", "formation": "Front" },
+        { "last_name": "Lefevre", "first_name": "Alice", "formation": "Back" },
+        { "last_name": "Morel", "first_name": "Thomas", "formation": "Cda" },
+        { "last_name": "Girard", "first_name": "Laura", "formation": "ERA" },
+        { "last_name": "Andre", "first_name": "Maxime", "formation": "Front" },
+        { "last_name": "Lambert", "first_name": "Chloe", "formation": "Back" },
+        { "last_name": "Bonnet", "first_name": "Antoine", "formation": "Cda" },
+        { "last_name": "Francois", "first_name": "Julie", "formation": "ERA" }
     ]
+
+    // const [listEtudiant, setListEtudiant]  = useState([])
+    // useEffect(() => {
+    //     fetch(`http://localhost:5000/user`, {
+    //         method: "GET"
+    //     })
+    //         .then(response => response.json())
+    //         .then(data => {
+    //             console.log(data)
+    //             setListEtudiant(data)
+    //         })
+    //         .catch(error => console.error(error))
+    // }, [])
 
     const [selectedFormation, setSelectedFormation] = useState([]); //recuperes et stock la liste des formation selectionner
     const [checked, setChecked] = useState([]); //stock la valeur des élément cocher de la liste d'éléves
@@ -133,7 +217,7 @@ export const AjoutQuestion = () => {
             setLeft(listEtudiant.map((etudiant, index) => index));
             setRight([]);
         }
-    }, [selectedFormation]); 
+    }, [selectedFormation]);
 
 
     /** recuperes la valeur des formations sélectionner */
@@ -194,7 +278,7 @@ export const AjoutQuestion = () => {
     const filteredLeft = left.filter((index) => {
         const student = listEtudiant[index];
         return (
-            student.nom.toLowerCase().includes(searchTerm) || student.prenom.toLowerCase().includes(searchTerm)
+            student.last_name.toLowerCase().includes(searchTerm) || student.first_name.toLowerCase().includes(searchTerm)
         );
     });
 
@@ -221,7 +305,7 @@ export const AjoutQuestion = () => {
                                     }}
                                 />
                             </ListItemIcon>
-                            <ListItemText id={labelId} primary={`${listEtudiant[value].prenom} ${listEtudiant[value].nom}`} />
+                            <ListItemText id={labelId} primary={`${listEtudiant[value].first_name} ${listEtudiant[value].last_name}`} />
                         </ListItemButton>
                     );
                 })}
@@ -245,7 +329,7 @@ export const AjoutQuestion = () => {
                                 <Autocomplete onChange={
                                     (e) => handleQuestionChange(question.id, e.target.textContent)}
                                     disablePortal
-                                    options={['question1', 'plop']}
+                                    options={listeQuestions}
                                     sx={{ width: 10000 }}
                                     renderInput={(params) => <TextField {...params} label="question" />}
                                 />
@@ -261,10 +345,10 @@ export const AjoutQuestion = () => {
                         </div>
                     </ul>
 
-                    <div className='addNewQuestion'>
-                        <TextField onChange={(e) => handleNewQuestionChange(e.target.value)} label="Nouvelle question:" variant="outlined" />
-                        <Button onClick={createNewQuestion} variant="contained" disableElevation>Crée nouvelle question</Button>
-                    </div>
+                    <form onSubmit={(e) => createNewQuestion(e)} className='addNewQuestion'>
+                        <TextField id='newQuestion' inputRef={newQuestionRef} onChange={(e) => handleNewQuestionChange(e.target.value)} label="Nouvelle question:" variant="outlined" />
+                        <Button id='btnCreeQuestion' type="submit" variant="contained" disableElevation>Crée nouvelle question</Button>
+                    </form>
                 </div>
 
                 <div className='divR flexR'>
@@ -336,6 +420,14 @@ export const AjoutQuestion = () => {
                         </Grid>
                         <div className='btnCree'>
                             <Button onClick={createQuestionnaire} variant="contained" disableElevation>Crée questionnaire</Button>
+                        </div>
+                        <div className='alertPopUp'>
+                            <Collapse in={addError} >
+                                <Alert severity="error">{addErrorMessage}</Alert>
+                            </Collapse>
+                            <Collapse in={addSuccess} >
+                                <Alert severity="success">{addSuccessMessage}</Alert>
+                            </Collapse>
                         </div>
                     </div>
                 </div>
