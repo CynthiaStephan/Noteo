@@ -322,25 +322,39 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
 
 ---
 
-### **# Créer une question**
-- **URL** : `/question`
+### Créer un questionnaire
+- **URL** : `/questionnaire/:user_id`
 - **Méthode** : `POST`
-- **Description** : Crée une nouvelle question.
+- **Description** : Crée un nouveau questionnaire pour un utilisateur spécifique avec des questions et des utilisateurs associés.
 - **Corps de la requête** :
-  ```json
-  {
-    "question": "Nouvelle question"
-  }
-  ```
+
+```json
+{
+  "title": "Nouveau questionnaire",
+  "questions": ["Question 1", "Question 2"],
+  "user_ids": [1, 2, 3]
+}
+```
+
 - **Réponse** :
-  - **Code** : `200 OK`
+  - **Code** : `201 Created`
   - **Corps** :
-    ```json
-    {
-      "question_id": 3,
-      "question": "Nouvelle question"
-    }
-    ```
+
+```json
+{
+  "questionnaire_id": 3,
+  "title": "Nouveau questionnaire",
+  "user_id": 2,
+  "questions": [
+    {"question_id": 1, "question": "Question 1"},
+    {"question_id": 2, "question": "Question 2"}
+  ],
+  "users": [
+    {"user_id": 1, "first_name": "Alice", "last_name": "Smith"},
+    {"user_id": 2, "first_name": "Bob", "last_name": "Johnson"}
+  ]
+}
+```
 
 ---
 

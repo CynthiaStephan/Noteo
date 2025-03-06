@@ -35,7 +35,7 @@ class QuestionnaireController{
 
     async createQuestionnaire(req, res){
         const { user_id } = req.params;
-        const { title } = req.body;
+        const { title, question_ids, user_ids } = req.body;
 
         try {
             if(title.length === 0){
@@ -47,11 +47,39 @@ class QuestionnaireController{
                 user_id : user_id,
             });
 
-            if (!newQuestionnaire || newQuestionnaire.length === 0){
+            if (!newQuestionnaire){
                 return res.status(404).json({ message: `Fail while creating the questionnaire`});
             }
             
-            res.status(200).json(newQuestionnaire);
+            if (Array.isArray(question_ids) && question_ids.length > 0) {
+                const createdQuestions = await Promise.all(
+                    question_ids.map(async (questionText) => {
+                        return await QuestionModel.create({
+                            question: questionText,
+                            questionnaire_id: newQuestionnaire.questionnaire_id
+                        });
+                    })
+                );
+            }
+    
+            if (Array.isArray(user_ids) && user_ids.length > 0) {
+                await newQuestionnaire.addUsers(user_ids);
+            }
+    
+            const fullQuestionnaire = await QuestionnaireModel.findByPk(newQuestionnaire.questionnaire_id, {
+                include: [
+                    {
+                        model: QuestionModel,
+                        attributes: ['question_id', 'question']
+                    },
+                    {
+                        model: UserModel,
+                        attributes: ['user_id', 'first_name', 'last_name']
+                    }
+                ]
+            });
+    
+            res.status(201).json(fullQuestionnaire);
             
         } catch (error) {
             res.status(500).json({ error : error.message });
