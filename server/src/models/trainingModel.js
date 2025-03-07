@@ -13,12 +13,14 @@ const Training = sequelize.define('training', {
     },
 }, {
     timestamps: false,
+    tableName: 'training',
 });
 
 Training.associate = (models) => {
     Training.belongsToMany(models.user, {
         through: 'training_user',
-        foreignKey: 'training_id'
+        foreignKey: 'training_id',
+        otherKey: 'user_id'
     });
 };
 

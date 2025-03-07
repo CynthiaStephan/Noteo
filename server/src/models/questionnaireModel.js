@@ -25,15 +25,20 @@ const Questionnaire = sequelize.define('questionnaire', {
 Questionnaire.associate = (models) => {
     // Vers User
     Questionnaire.belongsTo(models.user, {
-        foreignKey: 'user_id'
+        foreignKey: 'user_id',
+        otherKey: 'user_id'
     });
     Questionnaire.belongsToMany(models.user, {
         through: 'questionnaire_user',
         foreignKey: 'questionnaire_id',
+        otherKey: 'user_id',
+        as: "assigned_users", 
     });
     // Vers Question
-    Questionnaire.hasMany(models.question, {
+    Questionnaire.belongsToMany(models.question, {
+        through: 'questionnaire_question',
         foreignKey: 'questionnaire_id',
+        otherKey: 'question_id'
     });
 };
 

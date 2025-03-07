@@ -1,9 +1,14 @@
 const QuestionnaireModel = require('../models/questionnaireModel');
+const QuestionModel = require('../models/questionModel');
+const UserModel = require('../models/userModel');
 
 class QuestionnaireController{
 
     async getAllQuestionnaires(req, res){
         try {
+            console.log(QuestionModel.getTableName);
+            console.log(UserModel.getTableName);
+
             const questionnaire = await QuestionnaireModel.findAll();
             if(!questionnaire || questionnaire.length === 0){
                 return res.status(404).json({ error : 'Questionnaire not found'});
@@ -34,7 +39,7 @@ class QuestionnaireController{
     };
 
     async createQuestionnaire(req, res){
-        const { user_id } = req.params;
+        const { trainer_id } = req.params;
         const { title, question_ids, user_ids } = req.body;
 
         try {
@@ -44,7 +49,7 @@ class QuestionnaireController{
 
             const newQuestionnaire = await QuestionnaireModel.create({
                 title : title,
-                user_id : user_id,
+                user_id : trainer_id,
             });
 
             if (!newQuestionnaire){
@@ -52,29 +57,29 @@ class QuestionnaireController{
             }
             
             if (Array.isArray(question_ids) && question_ids.length > 0) {
-                const createdQuestions = await Promise.all(
-                    question_ids.map(async (questionText) => {
-                        return await QuestionModel.create({
-                            question: questionText,
-                            questionnaire_id: newQuestionnaire.questionnaire_id
-                        });
-                    })
-                );
+                await newQuestionnaire.addQuestions(question_ids);
             }
     
             if (Array.isArray(user_ids) && user_ids.length > 0) {
-                await newQuestionnaire.addUsers(user_ids);
+                await newQuestionnaire.addAssigned_users(user_ids);
             }
     
             const fullQuestionnaire = await QuestionnaireModel.findByPk(newQuestionnaire.questionnaire_id, {
                 include: [
                     {
                         model: QuestionModel,
-                        attributes: ['question_id', 'question']
+                        attributes: ["question_id", "question"],
+                        through: { 
+                            attributes: []
+                        }
                     },
                     {
                         model: UserModel,
-                        attributes: ['user_id', 'first_name', 'last_name']
+                        as: "assigned_users",
+                        attributes: ["user_id", "first_name", "last_name"],
+                        through: { 
+                            attributes: []
+                        }
                     }
                 ]
             });

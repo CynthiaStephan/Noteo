@@ -58,7 +58,7 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
     "last_name": "Doe",
     "email": "johndoe@example.com",
     "password": "securepassword",
-    "role": "user"
+    "role": "intern"
   }
   ```
 - **Réponse** :
@@ -70,7 +70,7 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
       "first_name": "John",
       "last_name": "Doe",
       "email": "johndoe@example.com",
-      "role": "user"
+      "role": "intern"
     }
     ```
 
@@ -92,7 +92,7 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
         "first_name": "John",
         "last_name": "Doe",
         "email": "johndoe@example.com",
-        "role": "user"
+        "role": "intern"
       }
     ]
     ```
@@ -112,7 +112,7 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
       "first_name": "John",
       "last_name": "Doe",
       "email": "johndoe@example.com",
-      "role": "user"
+      "role": "intern"
     }
     ```
 
@@ -129,7 +129,7 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
     "last_name": "Doe",
     "email": "johndoe@example.com",
     "password": "securepassword",
-    "role": "user"
+    "role": "intern"
   }
   ```
 - **Réponse** :
@@ -141,7 +141,7 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
       "first_name": "John",
       "last_name": "Doe",
       "email": "johndoe@example.com",
-      "role": "user"
+      "role": "intern"
     }
     ```
 
@@ -225,26 +225,40 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
 
 ---
 
-### **# Créer un questionnaire**
-- **URL** : `/questionnaire/:user_id`
+### Créer un questionnaire
+- **URL** : `/questionnaire/new/:trainer_id`
 - **Méthode** : `POST`
-- **Description** : Crée un nouveau questionnaire pour un utilisateur spécifique.
+- **Description** : Crée un nouveau questionnaire pour un utilisateur spécifique avec des questions et des utilisateurs associés.
 - **Corps de la requête** :
-  ```json
-  {
-    "title": "Nouveau questionnaire"
-  }
-  ```
+
+```json
+{
+  "title": "Nouveau questionnaire",
+  "question_ids": [1, 2, 5],
+  "user_ids": [1, 2]
+}
+```
+
 - **Réponse** :
-  - **Code** : `200 OK`
+  - **Code** : `201 Created`
   - **Corps** :
-    ```json
-    {
-      "questionnaire_id": 3,
-      "title": "Nouveau questionnaire",
-      "user_id": 2
-    }
-    ```
+
+```json
+{
+  "questionnaire_id": 3,
+  "title": "Nouveau questionnaire",
+  "user_id": 2,
+  "questions": [
+    {"question_id": 1, "question": "Question 1"},
+    {"question_id": 2, "question": "Question 2"},
+    {"question_id": 5, "question": "Question 5"},
+  ],
+  "users": [
+    {"user_id": 1, "first_name": "Alice", "last_name": "Smith"},
+    {"user_id": 2, "first_name": "Bob", "last_name": "Johnson"}
+  ]
+}
+```
 
 ---
 
@@ -319,42 +333,6 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
       "question": "Description de compétence"
     }
     ```
-
----
-
-### Créer un questionnaire
-- **URL** : `/questionnaire/:user_id`
-- **Méthode** : `POST`
-- **Description** : Crée un nouveau questionnaire pour un utilisateur spécifique avec des questions et des utilisateurs associés.
-- **Corps de la requête** :
-
-```json
-{
-  "title": "Nouveau questionnaire",
-  "questions": ["Question 1", "Question 2"],
-  "user_ids": [1, 2, 3]
-}
-```
-
-- **Réponse** :
-  - **Code** : `201 Created`
-  - **Corps** :
-
-```json
-{
-  "questionnaire_id": 3,
-  "title": "Nouveau questionnaire",
-  "user_id": 2,
-  "questions": [
-    {"question_id": 1, "question": "Question 1"},
-    {"question_id": 2, "question": "Question 2"}
-  ],
-  "users": [
-    {"user_id": 1, "first_name": "Alice", "last_name": "Smith"},
-    {"user_id": 2, "first_name": "Bob", "last_name": "Johnson"}
-  ]
-}
-```
 
 ---
 
