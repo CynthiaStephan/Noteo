@@ -7,11 +7,12 @@ const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
 
 // Routes imports
+const trainingRoutes = require('./routes/trainingRoutes');
 const userRoutes = require('./routes/userRoutes');
 const authRoutes = require('./routes/authRoutes');
 const questionnaireRoutes = require('./routes/questionnaireRoutes');
 const questionRoutes = require('./routes/questionRoutes');
-const answerRoutes = require('./routes/answerRoutes')
+const answerRoutes = require('./routes/answerRoutes');
 
 
 const app = express();
@@ -48,6 +49,7 @@ app.get('/', (req, res) => {
 
 // Registering route modules for handling specific API paths
 app.use('/auth', authRoutes);
+app.use('/training', trainingRoutes);
 app.use('/user', userRoutes);
 app.use('/questionnaire', questionnaireRoutes);
 app.use('/question', questionRoutes);
