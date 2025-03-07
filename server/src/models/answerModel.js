@@ -19,10 +19,13 @@ const Answer = sequelize.define('answer', {
 });
 
 Answer.associate = (models) => {
-    Answer.belongsTo(models.user);
+    Answer.belongsTo(models.user,{
+        otherKey: 'user_id',
+    });
     Answer.belongsToMany(models.question, {
         through: 'answer_question',
-        foreignKey: 'answer_id'
+        foreignKey: 'answer_id',
+        otherKey: 'question_id'
     });
 };
 

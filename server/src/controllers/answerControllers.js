@@ -2,9 +2,6 @@ const AnswerModel = require('../models/answerModel');
 const UserModel = require ('../models/userModel');
 const QuestionModel = require('../models/questionModel');
 const QuestionnaireModel = require('../models/questionnaireModel');
-const UserModel = require('../models/userModel');
-const { model } = require('../database.js');
-
 class AnswerController{
     
     async getAllAnswers(req, res){
