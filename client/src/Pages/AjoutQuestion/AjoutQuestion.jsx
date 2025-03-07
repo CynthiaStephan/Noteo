@@ -155,10 +155,28 @@ export const AjoutQuestion = () => {
             question: question
         }
 
+        let newQuestionaireRequest = {
+            title: questionnaire.titre,
+            question: [questionnaire.question.map(q => q.text)],
+            etudiant: [right.map(index => listEtudiant[index])]
+        }
+
+        console.log(newQuestionaireRequest)
+        // fetch(`http://localhost:5000//questionnaire/${localStorage.getItem('userId')}`, {
+        //     method: "POST",
+        //     headers: {
+        //         'Content-Type': 'application/json',
+        //     },
+        //     body: JSON.stringify(newQuestionaireRequest)
+        // })
+        //     .then(response => response.json())
+        //     .then(data => {
+        //         console.log(data)
+        //     })
+        //     .catch(error => console.error(error))
+
         setAddSuccessMessage('Questionnaire crée.')
         setAddSuccess(true)
-        console.log(questionnaire)
-        console.log(right.map(index => listEtudiant[index]))
     }
 
     /** gestion de à qui l'envoyer */
@@ -168,56 +186,59 @@ export const AjoutQuestion = () => {
         'Cda',
         'ERA'
     ]
-    let listEtudiant = [
-        { "last_name": "Dupont", "first_name": "Jean", "formation": "Front" },
-        { "last_name": "Martin", "first_name": "Sophie", "formation": "Back" },
-        { "last_name": "Lemoine", "first_name": "Paul", "formation": "Cda" },
-        { "last_name": "Durand", "first_name": "Emma", "formation": "ERA" },
-        { "last_name": "Bernard", "first_name": "Lucas", "formation": "Front" },
-        { "last_name": "Petit", "first_name": "Camille", "formation": "Back" },
-        { "last_name": "Robert", "first_name": "Nicolas", "formation": "Cda" },
-        { "last_name": "Richard", "first_name": "Elodie", "formation": "ERA" },
-        { "last_name": "Simon", "first_name": "Julien", "formation": "Front" },
-        { "last_name": "Lefevre", "first_name": "Alice", "formation": "Back" },
-        { "last_name": "Morel", "first_name": "Thomas", "formation": "Cda" },
-        { "last_name": "Girard", "first_name": "Laura", "formation": "ERA" },
-        { "last_name": "Andre", "first_name": "Maxime", "formation": "Front" },
-        { "last_name": "Lambert", "first_name": "Chloe", "formation": "Back" },
-        { "last_name": "Bonnet", "first_name": "Antoine", "formation": "Cda" },
-        { "last_name": "Francois", "first_name": "Julie", "formation": "ERA" }
-    ]
+    // let listEtudiant = [
+    //     { "last_name": "Dupont", "first_name": "Jean", "formation": "Front", "role": "intern" },
+    //     { "last_name": "Martin", "first_name": "Sophie", "formation": "Back", "role": "intern" },
+    //     { "last_name": "Lemoine", "first_name": "Paul", "formation": "Cda", "role": "intern" },
+    //     { "last_name": "Durand", "first_name": "Emma", "formation": "ERA", "role": "intern" },
+    //     { "last_name": "Bernard", "first_name": "Lucas", "formation": "Front", "role": "intern" },
+    //     { "last_name": "Petit", "first_name": "Camille", "formation": "Back", "role": "intern" },
+    //     { "last_name": "Robert", "first_name": "Nicolas", "formation": "Cda", "role": "intern" },
+    //     { "last_name": "Richard", "first_name": "Elodie", "formation": "ERA", "role": "intern" },
+    //     { "last_name": "Simon", "first_name": "Julien", "formation": "Front", "role": "intern" },
+    //     { "last_name": "Lefevre", "first_name": "Alice", "formation": "Back", "role": "trainer" },
+    //     { "last_name": "Morel", "first_name": "Thomas", "formation": "Cda", "role": "intern" },
+    //     { "last_name": "Girard", "first_name": "Laura", "formation": "ERA", "role": "intern" },
+    //     { "last_name": "Andre", "first_name": "Maxime", "formation": "Front", "role": "intern" },
+    //     { "last_name": "Lambert", "first_name": "Chloe", "formation": "Back", "role": "intern" },
+    //     { "last_name": "Bonnet", "first_name": "Antoine", "formation": "Cda", "role": "intern" },
+    //     { "last_name": "Francois", "first_name": "Julie", "formation": "ERA", "role": "intern" }
+    // ]
 
-    // const [listEtudiant, setListEtudiant]  = useState([])
-    // useEffect(() => {
-    //     fetch(`http://localhost:5000/user`, {
-    //         method: "GET"
-    //     })
-    //         .then(response => response.json())
-    //         .then(data => {
-    //             console.log(data)
-    //             setListEtudiant(data)
-    //         })
-    //         .catch(error => console.error(error))
-    // }, [])
+    const [listEtudiant, setListEtudiant] = useState([])
+    useEffect(() => {
+        fetch(`http://localhost:5000/user`, {
+            method: "GET"
+        })
+            .then(response => response.json())
+            .then(data => {
+                setListEtudiant(data)
+            })
+            .catch(error => console.error(error))
+    }, [])
 
-    const [selectedFormation, setSelectedFormation] = useState([]); //recuperes et stock la liste des formation selectionner
-    const [checked, setChecked] = useState([]); //stock la valeur des élément cocher de la liste d'éléves
-    const [left, setLeft] = useState(listEtudiant.map((etudiant, index) => index)); //stock la liste d'éleves a afficher dans la liste de gauche
-    const [right, setRight] = useState([]); //stock la liste d'éleves a afficher dans la liste de droite
+    const [selectedFormation, setSelectedFormation] = useState([]) //recuperes et stock la liste des formation selectionner
+    const [checked, setChecked] = useState([]) //stock la valeur des élément cocher de la liste d'éléves
+    const [right, setRight] = useState([]) //stock la liste d'éleves a afficher dans la liste de droite
+    /** stock la liste d'éleves a afficher dans la liste de gauche */
+    const [left, setLeft] = useState([])
+    useEffect(() => {
+        setLeft(listEtudiant.map((etudiant, index) => etudiant.role === 'intern' ? index : null).filter(index => index !== null))
+    }, [listEtudiant])
 
     /** filtre les étudiant avec le select formation */
     useEffect(() => {
         if (selectedFormation.length > 0) {
             let selectedEtudiants = listEtudiant
                 .map((etudiant, index) => (selectedFormation.includes(etudiant.formation) ? index : null))
-                .filter((index) => index !== null);
-            setRight(selectedEtudiants);
-            setLeft(listEtudiant.map((etudiant, index) => (selectedEtudiants.includes(index) ? null : index)).filter(index => index !== null));
+                .filter((index) => index !== null)
+            setRight(selectedEtudiants)
+            setLeft(listEtudiant.map((etudiant, index) => (selectedEtudiants.includes(index) || etudiant.role !== 'intern' ? null : index)).filter(index => index !== null))
         } else {
-            setLeft(listEtudiant.map((etudiant, index) => index));
-            setRight([]);
+            setLeft(listEtudiant.map((etudiant, index) => etudiant.role === 'intern' ? index : null).filter(index => index !== null))
+            setRight([])
         }
-    }, [selectedFormation]);
+    }, [selectedFormation])
 
 
     /** recuperes la valeur des formations sélectionner */
@@ -232,47 +253,47 @@ export const AjoutQuestion = () => {
 
     /** gere les checkbox en fonction du coter ou il sont */
     const not = (a, b) => {
-        return a.filter((value) => !b.includes(value));
+        return a.filter((value) => !b.includes(value))
     }
 
     const intersection = (a, b) => {
-        return a.filter((value) => b.includes(value));
+        return a.filter((value) => b.includes(value))
     }
     const leftChecked = intersection(checked, left);
-    const rightChecked = intersection(checked, right);
+    const rightChecked = intersection(checked, right)
 
     /** geres le bouton pour passer les élément a droite  */
     const handleCheckedRight = () => {
-        setRight(right.concat(leftChecked));
-        setLeft(not(left, leftChecked));
-        setChecked(not(checked, leftChecked));
+        setRight(right.concat(leftChecked))
+        setLeft(not(left, leftChecked))
+        setChecked(not(checked, leftChecked))
     };
 
     /** geres le bouton pour passer les élément a gauche  */
     const handleCheckedLeft = () => {
-        setLeft(left.concat(rightChecked));
-        setRight(not(right, rightChecked));
-        setChecked(not(checked, rightChecked));
+        setLeft(left.concat(rightChecked))
+        setRight(not(right, rightChecked))
+        setChecked(not(checked, rightChecked))
     };
 
     const handleToggle = (value) => () => {
-        const currentIndex = checked.indexOf(value);
-        const newChecked = [...checked];
+        const currentIndex = checked.indexOf(value)
+        const newChecked = [...checked]
 
         if (currentIndex === -1) {
-            newChecked.push(value);
+            newChecked.push(value)
         } else {
-            newChecked.splice(currentIndex, 1);
+            newChecked.splice(currentIndex, 1)
         }
 
         setChecked(newChecked);
     };
 
 
-    const [searchTerm, setSearchTerm] = useState('');
+    const [searchTerm, setSearchTerm] = useState('')
 
     const handleSearchChange = (e) => {
-        setSearchTerm(e.target.value.toLowerCase());
+        setSearchTerm(e.target.value.toLowerCase())
     };
 
     const filteredLeft = left.filter((index) => {
@@ -287,7 +308,7 @@ export const AjoutQuestion = () => {
         <Paper sx={{ width: 200, height: 230, overflow: 'auto' }}>
             <List dense component="div" role="list">
                 {items.map((value) => {
-                    const labelId = `transfer-list-item-${value}-label`;
+                    const labelId = `transfer-list-item-${value}-label`
 
                     return (
                         <ListItemButton

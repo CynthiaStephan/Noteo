@@ -28,17 +28,16 @@ import './Questionnaire.css'
 export const Questionnaire = () => {
     const [chartData, setChartData] = useState(null)
 
-    const question = [
-        'question 1',
-        'question 2',
-        'question 3',
-        'question 4',
-        'question 5',
-        'question 6',
-        'question 7',
-        'question 8',
-        'question 9',
-        'question 10'
+    const questions = [
+        { question_id: 1, question: 'question 1' },
+        { question_id: 2, question: 'question 2' },
+        { question_id: 3, question: 'question 3' },
+        { question_id: 4, question: 'question 4' },
+        { question_id: 5, question: 'question 5' },
+        { question_id: 6, question: 'question 6' },
+        { question_id: 7, question: 'question 7' },
+        { question_id: 8, question: 'question 8' },
+        { question_id: 9, question: 'question 9' }
     ]
 
     useEffect(() => {
@@ -70,36 +69,53 @@ export const Questionnaire = () => {
         });
     }, [])
 
+    const [questionNote, setQuestionNote] = useState([])
+    const noteValue = (e, questionName) => {
+        if (e.target.value > 16) {
+            e.target.value = 16
+        }
+        if (e.target.value < 0) {
+            e.target.value = 1
+        }
+        setQuestionNote(value => ({...value, [questionName]: e.target.value}))
+    }
+
+    const sendResult = (e) => {
+        e.preventDefault()
+        console.log(questionNote)
+    }
 
     return (
         chartData &&
         <>
             <NavBase />
             <section className='sectionQuestionnaire' id='flexLQ'>
-                <div className='divL' >
+                <form onSubmit={(e) => sendResult(e)} className='divL' >
                     <h2>Questionnaire 1</h2>
                     <ul className='questionList'>
-                        {question.map(q =>
-                            <li key={q}>
-                                <p>{q}</p>
+                        {questions.map((q) =>
+                            <li key={q.question_id}>
+                                <label htmlFor={q.question_id}>{q.question}</label> 
                                 <TextField
-                                    id="outlined-number"
+                                    id={q.question_id}
+                                    className='noteField'
+                                    onChange={e => noteValue(e, q.question)}
                                     label="note"
                                     type="number"
-                                    defaultValue="1"
                                     inputProps={{
                                         min: 1,
                                         max: 16
                                     }}
+                                    required
                                 />
                             </li>
                         )}
                     </ul>
                     <div className='btnEnvoyer'>
-                        <Button onClick={() => console.log('click')} variant="contained" disableElevation>Envoyer</Button>
+                        <Button type='submit' variant="contained" disableElevation>Envoyer</Button>
                     </div>
 
-                </div>
+                </form>
                 <div className='divR' id='flexRQ'>
                     <div className='graphique'>
                         <Radar

@@ -2,12 +2,13 @@ import { NavCree } from '../../Nav/NavCree'
 import { useState } from 'react';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
+import { useNavigate } from "react-router";
 
 import './CreeCompte.css';
 
 
 export const CreeCompte = () => {
-
+    const navigate = useNavigate()
     const [newUser, setNewUser] = useState({ first_name: '', last_name: '', email: '', password: '' })
     const [confirmPassword, setConfirmPassword] = useState("")
 
@@ -36,14 +37,22 @@ export const CreeCompte = () => {
             body: JSON.stringify(newUser)
         })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => {
+                console.log(data)
+                if (data.error) {
+                    alert(data.error)
+                } else {
+                    alert('Compte crée avec succès')
+                    navigate('/')
+                }
+            })
             .catch(error => console.error(error))
     }
 
     return (
         <>
             <NavCree />
-            <form onSubmit={(e) => {createUser(e)}} className='pageFrom'>
+            <form onSubmit={(e) => { createUser(e) }} className='pageFrom'>
                 <h2>Crée un compte</h2>
                 <div className="formList">
                     <TextField onChange={(e) => handleForm(e)} id="last_name" label="Nom:" variant="standard" required />
