@@ -39,6 +39,9 @@
     display: block;
 }
 
+.noteField{
+    width: 75px;
+}
 
 #questionnaireBtn:hover {
     background-color: lightblue;

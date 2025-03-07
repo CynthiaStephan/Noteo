@@ -33,10 +33,10 @@ export const Connexion = () => {
                 console.log(data)
                 if (data.role === 'intern') {
                     navigate('/questionnaire')
-                    localStorage.setItem('userId', data.id);
+                    localStorage.setItem('userId', data.id)
                 } else if (data.role === 'trainer' || data.role === 'admin') {
                     navigate('/formateur')
-                    localStorage.setItem('userId', data.id);
+                    localStorage.setItem('userId', data.id)
                 }
             })
             .catch(error => console.error(error))

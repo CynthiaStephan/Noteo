@@ -1,15 +1,17 @@
-*{margin: 0;
-padding: 0;}
+* {
+    margin: 0;
+    padding: 0;
+}
 
-p{
+p {
     font-size: 18px
 }
 
-.mobileDisparition{
+.mobileDisparition {
     display: flex;
 }
 
-.formateur{
+.formateur {
     display: flex;
     flex-direction: row;
     width: 80vw;
@@ -18,89 +20,96 @@ p{
     align-items: center;
 }
 
-.formateur .filtreListe{
+.filtreListe {
     display: flex;
-    gap:24px;
-    margin:0
-    
+    flex-wrap: wrap;
+    gap: 24px;
+    margin: 0
 }
 
-.formateur button{
+.formateur button {
     text-align: center;
     width: 259px;
     height: 48px;
-    background-color: white;
-    border-color: black;
-    border-radius: 8px;
-    border-width: 1px;
 }
 
-.tabeauEleve{
-    border-style: solid;
-    border-color: black;
-    width: 80vw;
-    height: auto;
-    margin: 24px auto;
-}
-
-.tabeauEleve .categorie{
-    border-style: solid;
-    border-color: black;
-    height: 56px;
-}
-
-.tabeauEleve .liste{
-    height: 56px;
+.titleListe {
     display: flex;
+    border: solid black 1px;
+    margin: 25px auto 0px auto;
+    padding: 25px 25px 25px 30px;
+    gap: 1vw;
+    width: 80vw;
+}
+
+.tableauEleve {
+    border: solid black 1px;
+    border-top: none;
+    width: 80vw;
+    height: 60vh;
+    margin: 0px auto 25px auto;
+    overflow-y: scroll;
+}
+
+
+.liste {
+    display: flex;
+    height: 56px;
     gap: 1vw;
 }
 
-.tabeauEleve .liste p{
-    margin: auto 0;
+
+.liste p,
+.titleListe p {
     width: 15vw;
 }
 
-.tabeauEleve .listeEleve{
-    border-style: solid;
-    border-color: black;
+.listeEleve {
+    display: flex;
     min-height: 200px;
     flex-direction: column;
-    gap: 15px;
-    height: auto;
+    gap: 15px 0;
+    padding: 25px;
+}
+
+.listeEleve .liste {
     display: flex;
+    align-items: center;
+    border: solid 1px black;
+    border-radius: 5px;
+    padding-left: 5px;
+    cursor: pointer;
 }
 
-.tabeauEleve .listeEleve .liste{
-    height: 20px;
-}
-
-.tabeauEleve .liste .mobileDisparition{
+.mobileDisparition {
     width: 30vw;
 }
 
-@media (max-width: 670px) {
-    .tabeauEleve{
-        width: 90vw;
-        margin: 15px auto;
+@media (max-width: 1100px) {
+
+    .liste,
+    .titleListe  {
+        justify-content: center;
     }
-    .mobileDisparition{
+
+    .mobileDisparition {
         display: none;
     }
-    .tabeauEleve .liste p{
-        width: 29vw;
-    }
-    .formateur{
+
+    .formateur {
         width: 90vw;
         margin: 15px auto 0 auto;
         flex-direction: column-reverse;
     }
-    .formateur button{
+
+    .formateur button {
         height: 36px;
     }
-    .formateur .filtreListe{
+
+    .formateur .filtreListe {
         display: flex;
         margin: 40px 0 0 0;
         gap: 0;
     }
-    
- }
+
+}
