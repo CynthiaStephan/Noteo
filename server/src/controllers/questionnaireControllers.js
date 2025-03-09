@@ -83,7 +83,7 @@ class QuestionnaireController{
                     }
                 ]
             });
-    
+            console.log(fullQuestionnaire)
             res.status(201).json(fullQuestionnaire);
             
         } catch (error) {

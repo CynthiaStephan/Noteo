@@ -30,7 +30,7 @@ import './AjoutQuestion.css';
 export const AjoutQuestion = () => {
     /** gestions ajout questions */
 
-    const [question, setQuestion] = useState([]) //stock la liste des questions
+    const [question, setQuestion] = useState([]) //stock les valeur pour l'ajout de question
     const [title, setTitle] = useState([{ titre: '' }]) //stock le titre du questionnaire
     const [listeQuestions, setListeQuestions] = useState([]) //stock la liste des questions
     const [newQuestion, setNewQuestion] = useState('') //stock la nouvelle question crée
@@ -60,20 +60,19 @@ export const AjoutQuestion = () => {
 
     /** rajoute un champ de text a remplir */
     const addQuestion = () => {
-        setQuestion([...question, { id: Date.now(), text: '' }])
+        setQuestion([...question, { key: Date.now(), text: '', questionId: 0 }])
     }
 
     /** retire un champ de text a remplir */
-    const removeQuestion = (id) => {
-        setQuestion(question.filter((question) => question.id !== id))
+    const removeQuestion = (key) => {
+        setQuestion(question.filter((question) => question.key !== key))
     }
 
     /** recupers la valeur du champ de text des questions */
-    const handleQuestionChange = (id, value) => {
-        console.log(value)
+    const handleQuestionChange = (key, value) => {
         setQuestion(
             question.map((question) =>
-                question.id === id ? { ...question, text: value } : question
+                question.key === key ? { ...question, text: value.question, questionId: value.question_id} : question
             )
         )
     }
@@ -95,7 +94,7 @@ export const AjoutQuestion = () => {
         })
             .then(response => response.json())
             .then(data => {
-                setListeQuestions(data.map(q => q.question))
+                setListeQuestions(data)
             })
             .catch(error => console.error(error))
     }, [newQuestion == ''])
@@ -150,30 +149,25 @@ export const AjoutQuestion = () => {
         }
 
         /** stock les valeurs du questionnaires */
-        let questionnaire = {
-            titre: title[0].titre,
-            question: question
-        }
-
         let newQuestionaireRequest = {
-            title: questionnaire.titre,
-            question: [questionnaire.question.map(q => q.text)],
-            etudiant: [right.map(index => listEtudiant[index])]
+            title: title[0].titre,
+            question_ids: question.map(q => q.questionId),
+            user_ids: [right.map(index => listEtudiant[index].user_id)]
         }
 
         console.log(newQuestionaireRequest)
-        // fetch(`http://localhost:5000//questionnaire/${localStorage.getItem('userId')}`, {
-        //     method: "POST",
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //     },
-        //     body: JSON.stringify(newQuestionaireRequest)
-        // })
-        //     .then(response => response.json())
-        //     .then(data => {
-        //         console.log(data)
-        //     })
-        //     .catch(error => console.error(error))
+        fetch(`http://localhost:5000/questionnaire/new/${localStorage.getItem('userId')}`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(newQuestionaireRequest)
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+            })
+            .catch(error => console.error(error))
 
         setAddSuccessMessage('Questionnaire crée.')
         setAddSuccess(true)
@@ -346,15 +340,17 @@ export const AjoutQuestion = () => {
                     </div>
                     <ul className='questionList'>
                         {question.map((question) => (
-                            <li key={question.id}>
+                            <li key={question.key}>
                                 <Autocomplete onChange={
-                                    (e) => handleQuestionChange(question.id, e.target.textContent)}
+                                    (e) => {handleQuestionChange(question.key, listeQuestions.find(item => 
+                                        item.question === e.target.textContent))
+                                    }}
                                     disablePortal
-                                    options={listeQuestions}
+                                    options={listeQuestions.map(q => q.question)}
                                     sx={{ width: 10000 }}
                                     renderInput={(params) => <TextField {...params} label="question" />}
                                 />
-                                <IconButton onClick={() => removeQuestion(question.id)} aria-label="RemoveCircleOutlineIcon" size="large">
+                                <IconButton onClick={() => removeQuestion(question.key)} aria-label="RemoveCircleOutlineIcon" size="large">
                                     <RemoveCircleOutlineIcon fontSize="inherit" />
                                 </IconButton>
                             </li>
