@@ -15,7 +15,7 @@ class AnswerController{
             res.status(500).json({ error : error.message });
         }
     };
-        
+       
     async getAnswerById(req, res){
 
         const { answer_id } = req.params;
@@ -44,36 +44,49 @@ class AnswerController{
             if (!questionnaire){
                 return res.status(404).json({ error: `Questionnaire not found`});
             }
-            const user = await User.findByPk(user_id);
+            console.log(questionnaire)
+            const user = await UserModel.findByPk(user_id);
             if (!user){
                 return res.status(404).json({ error: `User not found`});
             }
+            console.log(user)
             
             const userAnswers = await UserModel.findOne({
                 where: { user_id: user_id },
                 include: [
                     {
                         model: QuestionnaireModel,
-                        through: {
-                            model: model.questionnaire_user,
-                            where: { questionnaire_id: questionnaire_id },
+                        where: {
+                            questionnaire_id: questionnaire_id,
                         },
-                        include: [
-                            {
-                                model: QuestionModel,
-                                include: [
-                                    {
-                                        model: AnswerModel,
-                                        through: {
-                                            model: model.answer_question,
-                                        }
-                                    }
-                                ]
-                            }
-                        ]
-                    }
-                ]
+                        attributes: ['questionnaire_id', 'title'],
+                        through: {
+                            where: { user_id: user_id },
+                            attributes: [],
+                        },
+
+                        include: [{
+                            model: QuestionModel,
+                            attributes: ['question_id', 'question'],
+                            through: {
+                                attributes: [],
+                            },
+
+                            include: [{
+                                model: AnswerModel,
+                                attributes: ['answer_id', 'answer'],
+                                where: { user_id: user_id },
+                                through: {
+                                    attributes: [],
+                                },
+
+                            }],
+                        }],
+                    },
+                ],
             });
+            console.log(userAnswers)
+
 
             if (!userAnswers) {
                 return res.status(404).json({ error: 'No answers found for this user in the given questionnaire' });
