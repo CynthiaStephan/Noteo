@@ -14,7 +14,7 @@ ChartJS.register(
     LineElement,
     Filler,
     Tooltip,
-    Legend
+    Legend,
 );
 
 import { Radar } from 'react-chartjs-2';
@@ -29,6 +29,8 @@ export const Questionnaire = () => {
     const [chartData, setChartData] = useState(null)
 
     const [listQuestionnaire, setListQuestionnaire] = useState([])
+    const [selectedQuestions, setSelectedQuestions] = useState([])
+    const [questionaireTitle, setQuestionaireTitle] = useState('')
 
     useEffect(() => {
         fetch(`http://localhost:5000/questionnaire`, {
@@ -36,51 +38,44 @@ export const Questionnaire = () => {
         })
             .then(response => response.json())
             .then(data => {
-                setListQuestionnaire(data.map((questionnaire) => ({ title: questionnaire.title, id: questionnaire.questionnaire_id })))
+                setListQuestionnaire(data.map((q) => ({ title: q.title, id: q.questionnaire_id, creatorId: q.user_id })))
             })
             .catch(error => console.error(error))
     }, [])
 
-    const questions = [
-        { question_id: 1, question: 'question 1' },
-        { question_id: 2, question: 'question 2' },
-        { question_id: 3, question: 'question 3' },
-        { question_id: 4, question: 'question 4' },
-        { question_id: 5, question: 'question 5' },
-        { question_id: 6, question: 'question 6' },
-        { question_id: 7, question: 'question 7' },
-        { question_id: 8, question: 'question 8' },
-        { question_id: 9, question: 'question 9' }
-    ]
+    const handleClickQuestionnaire = (clickedQuestionnaires) => {
+        fetch(`http://localhost:5000/questionnaire/${clickedQuestionnaires.id}`, {
+            method: "GET",
+        })
+            .then(response => response.json())
+            .then(data => {
+                setSelectedQuestions(data.questions)
+                setQuestionaireTitle(data.title)
+            })
+            .catch(error => console.error(error))
+    }
 
     useEffect(() => {
         setChartData({
-            labels: [
-                'question 1',
-                'question 2',
-                'question 3',
-                'question 4',
-                'question 5',
-                'question 6'
-            ],
+            labels: selectedQuestions.map((q, i) => `Q: ${i + 1}`),
             datasets: [
                 {
                     label: 'eval formateur',
-                    data: [5, 9, 2, 12, 14, 7],
+                    data: [],
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1,
                 },
                 {
                     label: 'auto eval',
-                    data: [7, 10, 8, 10, 13, 10],
+                    data: [],
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgb(54, 162, 235)',
                     borderWidth: 1,
                 },
             ],
-        });
-    }, [])
+        })
+    }, [selectedQuestions])
 
     const [questionNote, setQuestionNote] = useState([])
     const noteValue = (e, questionName) => {
@@ -104,11 +99,11 @@ export const Questionnaire = () => {
             <NavBase />
             <section className='sectionQuestionnaire' id='flexLQ'>
                 <form onSubmit={(e) => sendResult(e)} className='divL' >
-                    <h2>Questionnaire 1</h2>
+                    <h2>{questionaireTitle}</h2>
                     <ul className='questionQuestionnaireList'>
-                        {questions.map((q) =>
+                        {selectedQuestions.map((q, i) =>
                             <li key={q.question_id}>
-                                <label htmlFor={q.question_id}>{q.question}</label>
+                                <label htmlFor={q.question_id}><strong>{i + 1}</strong>{`: ${q.question}`}</label>
                                 <TextField
                                     id={q.question_id}
                                     className='noteField'
@@ -148,7 +143,7 @@ export const Questionnaire = () => {
                     <div className='listQuestionnaire'>
                         <ul className='questionnaireListe'>
                             {listQuestionnaire.map((questionnaire) => (
-                                <Button key={questionnaire.id} onClick={() => console.log(questionnaire)}>{questionnaire.title}</Button>
+                                <Button key={questionnaire.id} onClick={() => handleClickQuestionnaire(questionnaire)}>{questionnaire.title}</Button>
                             ))}
                         </ul>
                     </div>

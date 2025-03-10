@@ -334,7 +334,7 @@ export const AjoutQuestion = () => {
                             </ListItemIcon>
                             <ListItemText id={labelId} primary={`${listEtudiant[value].first_name} ${listEtudiant[value].last_name}`} />
                         </ListItemButton>
-                    );
+                    )
                 })}
             </List>
         </Paper>
