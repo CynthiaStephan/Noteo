@@ -55,7 +55,8 @@ User.associate = (models) => {
     User.belongsToMany(models.questionnaire, {
         through: 'questionnaire_user',
         foreignKey: 'user_id',
-        otherKey: 'questionnaire_id'
+        otherKey: 'questionnaire_id',
+        as: "assigned_users"
     });
     User.hasMany(models.questionnaire, {
         foreignKey: 'user_id',

@@ -41,6 +41,9 @@ class AnswerController{
 
         try{
             const questionnaire = await QuestionnaireModel.findByPk(questionnaire_id);
+
+            const trainer_id = questionnaire.dataValues.user_id;
+            
             if (!questionnaire){
                 return res.status(404).json({ error: `Questionnaire not found`});
             }
@@ -49,64 +52,106 @@ class AnswerController{
             if (!user){
                 return res.status(404).json({ error: `User not found`});
             }
-            console.log(user)
             
             const userAnswers = await UserModel.findOne({
                 where: { user_id: user_id },
-                include: [
-                    {
-                        model: QuestionnaireModel,
-                        where: {
-                            questionnaire_id: questionnaire_id,
-                        },
-                        attributes: ['questionnaire_id', 'title'],
-                        through: {
-                            where: { user_id: user_id },
-                            attributes: [],
-                        },
-
+                attributes: ['user_id', 'first_name', 'last_name', 'role'],
+                include: [{
+                    model: QuestionnaireModel,
+                    as: "assigned_users",
+                    where: { questionnaire_id: questionnaire_id },
+                    attributes: ['questionnaire_id', 'title'],
+                    through: { attributes: [] },
+                    include: [{
+                        model: QuestionModel,
+                        attributes: ['question_id', 'question'],
+                        through: { attributes: [] },
                         include: [{
-                            model: QuestionModel,
-                            attributes: ['question_id', 'question'],
-                            through: {
-                                attributes: [],
-                            },
-
-                            include: [{
-                                model: AnswerModel,
-                                attributes: ['answer_id', 'answer'],
-                                where: { user_id: user_id },
-                                through: {
-                                    attributes: [],
-                                },
-
-                            }],
-                        }],
-                    },
-                ],
+                            model: AnswerModel,
+                            // as: 'intern_answers',
+                            where: { user_id: [user_id, trainer_id] }, 
+                            attributes: [
+                                'user_id',
+                                ['answer', 'intern_answer'] 
+                            ],
+                            through: { attributes: [] },
+                            required: false,
+                        },
+                    ]
+                    }]
+                }]
             });
-            console.log(userAnswers)
 
-
+            console.log("réponses", userAnswers)
             if (!userAnswers) {
                 return res.status(404).json({ error: 'No answers found for this user in the given questionnaire' });
+            } else if (userAnswers){
+                res.status(200).json({ userAnswers });
+            } else {
+                res.status(400).json({ message: "You haven't answered this questionnaire yet." });
             }
-
-            const answers = userAnswers.questionnaires[0].questions.map(question => {
-                return {
-                    question: question.question,
-                    answers: question.answers.map(answer => answer.answer)
-                };
-            });
-    
-            res.status(200).json({ questionnaireTitle: questionnaire.title, answers });
-
 
         } catch (error) {
             res.status(500).json({ error: error.message });
         }
     };
 
+    async createAnswer(req, res){
+        const { question_id } = req.params;
+        const { answer, user_id } = req.body;
+
+        try {
+            if(answer.length === 0){
+                return res.status(404).json({ error: `answer's answer can't be empty`});
+            }
+            const question = await QuestionModel.findByPk(question_id);
+            if (!question){
+                return res.status(404).json({ error: `Question not found`});
+            }
+
+            const newanswer = await AnswerModel.create({
+                answer : answer,
+                user_id : user_id,
+            });
+            if (!newanswer || newanswer.length === 0){
+                return res.status(404).json({ message: `Fail while creating the answer`});
+            }
+
+            await newanswer.addQuestion(question);
+            res.status(200).json(newanswer);
+            
+        } catch (error) {
+            res.status(500).json({ error : error.message });
+        }
+    };
+    async createManyAnswers(req, res){
+        const { question_id } = req.params;
+        const { answer, user_id } = req.body;
+
+        try {
+            if(answer.length === 0){
+                return res.status(404).json({ error: `answer's answer can't be empty`});
+            }
+            const question = await QuestionModel.findByPk(question_id);
+            if (!question){
+                return res.status(404).json({ error: `Question not found`});
+            }
+
+            const newanswer = await AnswerModel.create({
+                answer : answer,
+                user_id : user_id,
+            });
+            if (!newanswer || newanswer.length === 0){
+                return res.status(404).json({ message: `Fail while creating the answer`});
+            }
+
+            await newanswer.addQuestion(question);
+            res.status(200).json(newanswer);
+            
+        } catch (error) {
+            res.status(500).json({ error : error.message });
+        }
+    };
     async createAnswer(req, res){
         const { question_id } = req.params;
         const { answer, user_id } = req.body;
