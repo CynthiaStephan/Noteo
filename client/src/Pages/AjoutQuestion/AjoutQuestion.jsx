@@ -34,6 +34,7 @@ export const AjoutQuestion = () => {
     const [title, setTitle] = useState([{ titre: '' }]) //stock le titre du questionnaire
     const [listeQuestions, setListeQuestions] = useState([]) //stock la liste des questions
     const [newQuestion, setNewQuestion] = useState('') //stock la nouvelle question crée
+    const [disabledBtn, setDisabledBtn] = useState(false)
     const newQuestionRef = useRef(null) //recuperes la ref de la nouvelle question crée pour pouvoir supprimer le champs de text
 
     /** geres les alert en cas de succes */
@@ -103,7 +104,7 @@ export const AjoutQuestion = () => {
         e.preventDefault()
         console.log({ question: newQuestion })
 
-        fetch(`http://localhost:5000/question/`, {
+        fetch(`http://localhost:5000/question/new`, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
@@ -152,9 +153,10 @@ export const AjoutQuestion = () => {
         let newQuestionaireRequest = {
             title: title[0].titre,
             question_ids: question.map(q => q.questionId),
-            user_ids: [right.map(index => listEtudiant[index].user_id)]
+            user_ids: right.map(index => listEtudiant[index].user_id)
         }
 
+        /** envoies les donnée du questionnaire pour le crée dans la base de donnée */
         console.log(newQuestionaireRequest)
         fetch(`http://localhost:5000/questionnaire/new/${localStorage.getItem('userId')}`, {
             method: "POST",
@@ -166,6 +168,17 @@ export const AjoutQuestion = () => {
             .then(response => response.json())
             .then(data => {
                 console.log(data)
+                if (data.error) {
+                    setAddErrorMessage(data.error)
+                    setAddError(true)
+                } else {
+                    setDisabledBtn(!disabledBtn)
+                    setAddSuccessMessage('Questionnaire crée.')
+                    setAddSuccess(true)
+                    setTimeout(() => {
+                        window.location.reload()
+                    }, 3000);
+                }
             })
             .catch(error => console.error(error))
 
@@ -217,7 +230,7 @@ export const AjoutQuestion = () => {
     /** stock la liste d'éleves a afficher dans la liste de gauche */
     const [left, setLeft] = useState([])
     useEffect(() => {
-        setLeft(listEtudiant.map((etudiant, index) => etudiant.role === 'intern' ? index : null).filter(index => index !== null))
+        setLeft(listEtudiant.map((etudiant, index) => etudiant.role === 'intern' ? index : null).filter(index => index !== null)) //filtre les étudiant de tout les utilisateur
     }, [listEtudiant])
 
     /** filtre les étudiant avec le select formation */
@@ -268,8 +281,7 @@ export const AjoutQuestion = () => {
         setLeft(left.concat(rightChecked))
         setRight(not(right, rightChecked))
         setChecked(not(checked, rightChecked))
-    };
-
+    }
     const handleToggle = (value) => () => {
         const currentIndex = checked.indexOf(value)
         const newChecked = [...checked]
@@ -280,22 +292,22 @@ export const AjoutQuestion = () => {
             newChecked.splice(currentIndex, 1)
         }
 
-        setChecked(newChecked);
-    };
+        setChecked(newChecked)
+    }
 
 
     const [searchTerm, setSearchTerm] = useState('')
 
     const handleSearchChange = (e) => {
         setSearchTerm(e.target.value.toLowerCase())
-    };
+    }
 
     const filteredLeft = left.filter((index) => {
         const student = listEtudiant[index];
         return (
             student.last_name.toLowerCase().includes(searchTerm) || student.first_name.toLowerCase().includes(searchTerm)
-        );
-    });
+        )
+    })
 
     /** crée un élément dans la liste pour chaque étudiant */
     const customList = (items) => (
@@ -436,7 +448,7 @@ export const AjoutQuestion = () => {
                             <Grid item>{customList(right)}</Grid>
                         </Grid>
                         <div className='btnCree'>
-                            <Button onClick={createQuestionnaire} variant="contained" disableElevation>Crée questionnaire</Button>
+                            <Button disabled={disabledBtn} onClick={createQuestionnaire} variant="contained" disableElevation>Crée questionnaire</Button>
                         </div>
                         <div className='alertPopUp'>
                             <Collapse in={addError} >
