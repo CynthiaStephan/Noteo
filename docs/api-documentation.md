@@ -371,6 +371,89 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
     }
     ```
 
+    ## 📂 **Réponses (Answers)**
+
+### **# Récupérer toutes les réponses**
+- **URL** : `/answer`
+- **Méthode** : `GET`
+- **Description** : Récupère toutes les réponses disponibles.
+- **Réponse** :
+  - **Code** : `200 OK`
+  - **Corps** :
+    ```json
+    [
+      {
+        "answer_id": 1,
+        "user_id": 2,
+        "question_id": 5,
+        "response": "La réponse de l'utilisateur"
+      }
+    ]
+    ```
+
+### **# Récupérer une réponse par ID**
+- **URL** : `/answer/:answer_id`
+- **Méthode** : `GET`
+- **Description** : Récupère une réponse spécifique par son identifiant.
+- **Réponse** :
+  - **Code** : `200 OK`
+  - **Corps** :
+    ```json
+    {
+      "answer_id": 1,
+      "user_id": 2,
+      "question_id": 5,
+      "response": "La réponse de l'utilisateur"
+    }
+    ```
+
+### **# Récupérer les réponses d'un utilisateur à un questionnaire**
+- **URL** : `/answer/questionnaire/:questionnaire_id`
+- **Méthode** : `POST`
+- **Description** : Récupère toutes les réponses d'un utilisateur pour un questionnaire donné.
+- **Corps de la requête** :
+  ```json
+  {
+    "user_id": 2
+  }
+  ```
+- **Réponse** :
+  - **Code** : `200 OK`
+  - **Corps** :
+    ```json
+      {
+      "userAnswers": {
+          "user_id": 1,
+          "first_name": "Jean",
+          "last_name": "Dupont",
+          "role": "intern",
+          "assigned_users": [
+              {
+                  "questionnaire_id": 1,
+                  "title": "Super questionnaire",
+                  "questions": [
+                      {
+                          "question_id": 2,
+                          "question": "Maîtrisez-vous les bases de JavaScript ?",
+                          "answers": [
+                              {
+                                  "user_id": 1,
+                                  "intern_answer": 12
+                              },
+                              {
+                                  "user_id": 2,
+                                  "intern_answer": 5
+                              }
+                          ]
+                      },
+                  ]
+              }
+          ]
+      }
+  }
+
+    ```
+
 ---
 
 ## 🛑 **Erreurs courantes**
