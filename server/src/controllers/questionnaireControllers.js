@@ -22,10 +22,14 @@ class QuestionnaireController{
     async getQuestionnaireById(req, res){
 
         const { questionnaire_id } = req.params;
-
         try{
 
-            const questionnaire = await QuestionnaireModel.findByPk(questionnaire_id);
+            const questionnaire = await QuestionnaireModel.findByPk(questionnaire_id,{
+                include: [{
+                    model: QuestionModel,
+                    through: { attributes: [] },
+                }]
+            });
 
             if(!questionnaire || questionnaire.length === 0){
                 return res.status(404).json({ error: 'Questionnaire not found'});
