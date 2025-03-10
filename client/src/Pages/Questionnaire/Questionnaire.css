@@ -12,9 +12,14 @@
     border-top: solid black 1px;
 }
 
-.questionList {
-    height: 62.5vh;
+.questionQuestionnaireList {
+    height: 70vh;
     overflow-y: scroll;
+}
+
+.questionQuestionnaireList li {
+    display: flex;
+    align-items: center;
 }
 
 .btnEnvoyer {
