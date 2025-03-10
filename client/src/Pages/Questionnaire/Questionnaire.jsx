@@ -28,6 +28,19 @@ import './Questionnaire.css'
 export const Questionnaire = () => {
     const [chartData, setChartData] = useState(null)
 
+    const [listQuestionnaire, setListQuestionnaire] = useState([])
+
+    useEffect(() => {
+        fetch(`http://localhost:5000/questionnaire`, {
+            method: "GET",
+        })
+            .then(response => response.json())
+            .then(data => {
+                setListQuestionnaire(data.map((questionnaire) => ({ title: questionnaire.title, id: questionnaire.questionnaire_id })))
+            })
+            .catch(error => console.error(error))
+    }, [])
+
     const questions = [
         { question_id: 1, question: 'question 1' },
         { question_id: 2, question: 'question 2' },
@@ -77,7 +90,7 @@ export const Questionnaire = () => {
         if (e.target.value < 0) {
             e.target.value = 1
         }
-        setQuestionNote(value => ({...value, [questionName]: e.target.value}))
+        setQuestionNote(value => ({ ...value, [questionName]: e.target.value }))
     }
 
     const sendResult = (e) => {
@@ -92,10 +105,10 @@ export const Questionnaire = () => {
             <section className='sectionQuestionnaire' id='flexLQ'>
                 <form onSubmit={(e) => sendResult(e)} className='divL' >
                     <h2>Questionnaire 1</h2>
-                    <ul className='questionList'>
+                    <ul className='questionQuestionnaireList'>
                         {questions.map((q) =>
                             <li key={q.question_id}>
-                                <label htmlFor={q.question_id}>{q.question}</label> 
+                                <label htmlFor={q.question_id}>{q.question}</label>
                                 <TextField
                                     id={q.question_id}
                                     className='noteField'
@@ -134,15 +147,9 @@ export const Questionnaire = () => {
 
                     <div className='listQuestionnaire'>
                         <ul className='questionnaireListe'>
-                            <Button onClick={() => console.log('click')}>questionnaire 1</Button>
-                            <Button onClick={() => console.log('click')}>questionnaire 2</Button>
-                            <Button onClick={() => console.log('click')}>questionnaire 3</Button>
-                            <Button onClick={() => console.log('click')}>questionnaire 4</Button>
-                            <Button onClick={() => console.log('click')}>questionnaire 5</Button>
-                            <Button onClick={() => console.log('click')}>questionnaire 6</Button>
-                            <Button onClick={() => console.log('click')}>questionnaire 7</Button>
-                            <Button onClick={() => console.log('click')}>questionnaire 8</Button>
-                            <Button onClick={() => console.log('click')}>questionnaire 9</Button>
+                            {listQuestionnaire.map((questionnaire) => (
+                                <Button key={questionnaire.id} onClick={() => console.log(questionnaire)}>{questionnaire.title}</Button>
+                            ))}
                         </ul>
                     </div>
                 </div>
