@@ -59,7 +59,7 @@ class AnswerController{
                     model: QuestionnaireModel,
                     as: "assigned_users",
                     where: { questionnaire_id: questionnaire_id },
-                    attributes: ['questionnaire_id', 'title'],
+                    attributes: ['questionnaire_id', 'title', ['user_id' , 'trainer_id']],
                     through: { attributes: [] },
                     include: [{
                         model: QuestionModel,
@@ -67,11 +67,10 @@ class AnswerController{
                         through: { attributes: [] },
                         include: [{
                             model: AnswerModel,
-                            // as: 'intern_answers',
                             where: { user_id: [user_id, trainer_id] }, 
                             attributes: [
                                 'user_id',
-                                ['answer', 'intern_answer'] 
+                                ['answer', 'answer'] 
                             ],
                             through: { attributes: [] },
                             required: false,

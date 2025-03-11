@@ -42,6 +42,32 @@ class QuestionnaireController{
         }
     };
 
+    async getQuestionnaireByUserId(req, res){
+
+        const { user_id } = req.params;
+        try{
+
+            const userQuestionnaires = await UserModel.findOne({
+                where: { user_id: user_id },
+                attributes: ['user_id', 'first_name', 'last_name', 'role'],
+                include: [{
+                    model: QuestionnaireModel,
+                    as: 'assigned_users',
+                    through: { attributes: [] },
+                }]
+            });
+
+            if(!userQuestionnaires || userQuestionnaires.length === 0){
+                return res.status(404).json({ error: 'Questionnaires not found'});
+            }
+            
+            res.status(200).json(userQuestionnaires);
+
+        } catch (error) {
+            res.status(500).json({ error: error.message });
+        }
+    };
+
     async createQuestionnaire(req, res){
         const { trainer_id } = req.params;
         const { title, question_ids, user_ids } = req.body;
