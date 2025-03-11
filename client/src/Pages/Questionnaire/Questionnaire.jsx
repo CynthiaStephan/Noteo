@@ -35,10 +35,14 @@ export const Questionnaire = () => {
     const [reponseEtudiant, setReponseEtudiant] = useState([])
     const [reponseFormateur, setReponseFormateur] = useState([])
 
+    const paramsId = new URLSearchParams(window.location.search)
+
     useEffect(() => {
-        fetch(`http://localhost:5000/questionnaire`, {
-            method: "GET",
-        })
+        fetch(`http://localhost:5000/questionnaire/`,
+            // paramsId.get('studiant_id') === null ? 
+            // `http://localhost:5000/questionnaire/${localStorage.getItem('userId')}` : 
+            // `http://localhost:5000/questionnaire/${paramsId.get('studiant_id')}`,
+            {method: "GET"})
             .then(response => response.json())
             .then(data => {
                 setListQuestionnaire(data.map((q) => ({ title: q.title, id: q.questionnaire_id, creatorId: q.user_id })))
@@ -139,8 +143,8 @@ export const Questionnaire = () => {
                                     required
                                     value={
                                         localStorage.getItem('userRole') === 'intern' ?
-                                        reponseEtudiant.length === 0 ? '' : reponseEtudiant[i] :
-                                        console.log('pas un etudiant')
+                                            reponseEtudiant.length === 0 ? '' : reponseEtudiant[i] :
+                                            console.log('pas un etudiant')
                                     }
                                     disabled={disabledInput}
                                 />
