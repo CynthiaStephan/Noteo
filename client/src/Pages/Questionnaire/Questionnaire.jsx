@@ -36,16 +36,17 @@ export const Questionnaire = () => {
     const [reponseFormateur, setReponseFormateur] = useState([])
 
     const paramsId = new URLSearchParams(window.location.search)
+    const userVerification = (paramsId.get('studiant_id') === null ? localStorage.getItem('userId') : paramsId.get('studiant_id'))
 
     useEffect(() => {
-        fetch(`http://localhost:5000/questionnaire/`,
-            // paramsId.get('studiant_id') === null ? 
-            // `http://localhost:5000/questionnaire/${localStorage.getItem('userId')}` : 
-            // `http://localhost:5000/questionnaire/${paramsId.get('studiant_id')}`,
-            {method: "GET"})
+        fetch(
+            paramsId.get('studiant_id') === null ?
+                `http://localhost:5000/questionnaire/user/${localStorage.getItem('userId')}` :
+                `http://localhost:5000/questionnaire/user/${paramsId.get('studiant_id')}`,
+            { method: "GET" })
             .then(response => response.json())
             .then(data => {
-                setListQuestionnaire(data.map((q) => ({ title: q.title, id: q.questionnaire_id, creatorId: q.user_id })))
+                setListQuestionnaire(data.assigned_users.map((q) => ({ title: q.title, id: q.questionnaire_id, creatorId: q.user_id })))
             })
             .catch(error => console.error(error))
     }, [])
@@ -61,24 +62,39 @@ export const Questionnaire = () => {
             })
             .catch(error => console.error(error))
 
-
-        fetch(`http://localhost:5000/answer/results/${clickedQuestionnaires.id}/${localStorage.getItem('userId')}`, {
-            method: "GET"
-        })
+        fetch(
+            paramsId.get('studiant_id') === null ?
+                `http://localhost:5000/answer/results/${clickedQuestionnaires.id}/${localStorage.getItem('userId')}` :
+                `http://localhost:5000/answer/results/${clickedQuestionnaires.id}/${paramsId.get('studiant_id')}`,
+            { method: "GET" })
             .then(response => response.json())
             .then(data => {
-                if (data.error === 'No answers found for this user in the given questionnaire') {
+                const reponse = data.userAnswers.assigned_users[0].questions
+                if (reponse.some((q) => q.answers.some((a) => a.user_id == userVerification)) && reponse.some((q) => q.answers.some((a) => a.user_id != userVerification))) {
                     setReponseEtudiant([])
+                    setReponseFormateur([])
                     setDisabledInput(false)
                 } else {
-                    console.log(data)
-                    console.log(data.userAnswers.assigned_users[0].questions.map((q) => q.answers[0].intern_answer))
-                    setReponseEtudiant(data.userAnswers.assigned_users[0].questions.map((q) => q.answers[0].intern_answer))
-                    setDisabledInput(true)
+
+                    if (reponse.some((q) => q.answers.some((a) => a.user_id == userVerification))) {
+                        setReponseEtudiant(reponse.map((q) => q.answers.find((a) => a.user_id == userVerification).answer))
+
+                    } else {
+                        setReponseEtudiant([])
+                        setDisabledInput(false)
+                    }
+
+                    if (reponse.some((q) => q.answers.some((a) => a.user_id != userVerification))) {
+                        setReponseFormateur(reponse.map((q) => q.answers.find((a) => a.user_id != userVerification).answer))
+
+                    } else {
+                        setReponseFormateur([])
+                        setDisabledInput(false)
+                    }
+
                 }
             })
             .catch(error => console.error(error))
-
     }
 
     useEffect(() => {
@@ -87,7 +103,7 @@ export const Questionnaire = () => {
             datasets: [
                 {
                     label: 'eval formateur',
-                    data: [],
+                    data: reponseFormateur,
                     backgroundColor: 'rgba(255, 99, 132, 0.2)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1,
@@ -144,7 +160,7 @@ export const Questionnaire = () => {
                                     value={
                                         localStorage.getItem('userRole') === 'intern' ?
                                             reponseEtudiant.length === 0 ? '' : reponseEtudiant[i] :
-                                            console.log('pas un etudiant')
+                                            reponseFormateur.length === 0 ? '' : reponseFormateur[i]
                                     }
                                     disabled={disabledInput}
                                 />
