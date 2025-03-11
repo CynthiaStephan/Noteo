@@ -59,7 +59,7 @@ class AnswerController{
                     model: QuestionnaireModel,
                     as: "assigned_users",
                     where: { questionnaire_id: questionnaire_id },
-                    attributes: ['questionnaire_id', 'title'],
+                    attributes: ['questionnaire_id', 'title', ['user_id' , 'trainer_id']],
                     through: { attributes: [] },
                     include: [{
                         model: QuestionModel,
@@ -67,11 +67,10 @@ class AnswerController{
                         through: { attributes: [] },
                         include: [{
                             model: AnswerModel,
-                            // as: 'intern_answers',
                             where: { user_id: [user_id, trainer_id] }, 
                             attributes: [
                                 'user_id',
-                                ['answer', 'intern_answer'] 
+                                ['answer', 'answer'] 
                             ],
                             through: { attributes: [] },
                             required: false,
@@ -123,34 +122,47 @@ class AnswerController{
             res.status(500).json({ error : error.message });
         }
     };
+    
     async createManyAnswers(req, res){
-        const { question_id } = req.params;
-        const { answer, user_id } = req.body;
+    const { answers, user_id } = req.body;
 
-        try {
-            if(answer.length === 0){
-                return res.status(404).json({ error: `answer's answer can't be empty`});
-            }
-            const question = await QuestionModel.findByPk(question_id);
-            if (!question){
-                return res.status(404).json({ error: `Question not found`});
-            }
+    try {
+        if (!answers || answers.length === 0) {
+            return res.status(400).json({ error: "Answers array can't be empty" });
+        }
 
-            const newanswer = await AnswerModel.create({
-                answer : answer,
-                user_id : user_id,
-            });
-            if (!newanswer || newanswer.length === 0){
-                return res.status(404).json({ message: `Fail while creating the answer`});
-            }
+        // Récupérer les IDs des questions
+        const questionIds = answers.map(a => a.question_id);
+        const questions = await QuestionModel.findAll({ where: { question_id: questionIds } });
 
-            await newanswer.addQuestion(question);
-            res.status(200).json(newanswer);
+        if (questions.length !== questionIds.length) {
+            return res.status(404).json({ error: "One or more questions not found" });
+        }
+
+        // Création des réponses
+        const createdAnswers = await AnswerModel.bulkCreate(
+            answers.map(a => ({
+                answer: a.answer,
+                user_id: user_id,
+                question_id: a.question_id
+            })), 
+            { validate: true, returning: true }
+        );
+
+        // Associer chaque réponse à sa question (si une table intermédiaire est utilisée)
+        for (const answer of createdAnswers) {
+            const question = questions.find(q => q.question_id === answer.question_id);
+            if (question) {
+                await answer.addQuestion(question);
+            }
+        }
+            res.status(200).json(createdAnswers);
             
         } catch (error) {
             res.status(500).json({ error : error.message });
         }
     };
+    
     async createAnswer(req, res){
         const { question_id } = req.params;
         const { answer, user_id } = req.body;
