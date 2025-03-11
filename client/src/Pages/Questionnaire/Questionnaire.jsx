@@ -53,6 +53,17 @@ export const Questionnaire = () => {
                 setQuestionaireTitle(data.title)
             })
             .catch(error => console.error(error))
+
+
+        fetch(`http://localhost:5000/results/questionnaire/${clickedQuestionnaires.id}/${localStorage.getItem('userId')}`, {
+            method: "GET"
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+            })
+            .catch(error => console.error(error))
+
     }
 
     useEffect(() => {
