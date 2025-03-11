@@ -373,39 +373,47 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
 
 ## 📂 **Réponses (Answers)**
 
-### **# Récupérer toutes les réponses**
-- **URL** : `/answer`
-- **Méthode** : `GET`
-- **Description** : Récupère toutes les réponses disponibles.
-- **Réponse** :
-  - **Code** : `200 OK`
-  - **Corps** :
-    ```json
-    [
-      {
-        "answer_id": 1,
-        "user_id": 2,
-        "question_id": 5,
-        "response": "La réponse de l'utilisateur"
-      }
-    ]
-    ```
-
-### **# Récupérer une réponse par ID**
-- **URL** : `/answer/:answer_id`
-- **Méthode** : `GET`
-- **Description** : Récupère une réponse spécifique par son identifiant.
-- **Réponse** :
-  - **Code** : `200 OK`
-  - **Corps** :
-    ```json
+### **# Enregistre les réponses des questions d'un questionnaire**
+- **URL** : `/answer//new/questionnaire`
+- **Méthode** : `POST`
+- **Description** : Enregistre les réponses des questions d'un questionnaire.
+- **Corps de la requête** :
+  ```json
     {
-      "answer_id": 1,
-      "user_id": 2,
-      "question_id": 5,
-      "response": "La réponse de l'utilisateur"
+        "user_id": 3,
+        "answers": [
+            { "question_id": 2, "answer": 16 },
+            { "question_id": 4, "answer": 8 },
+            { "question_id": 7, "answer": 12 }
+        ]
     }
-    ```
+  ```
+- **Réponse** :
+  - **Code** : `200 OK`
+  - **Corps** :
+  ```json
+    [
+        {
+            "answer_id": 16,
+            "answer": 16,
+            "user_id": 3,
+            "created_at": "2025-03-11T10:12:44.296Z"
+        },
+        {
+            "answer_id": 17,
+            "answer": 8,
+            "user_id": 3,
+            "created_at": "2025-03-11T10:12:44.296Z"
+        },
+        {
+            "answer_id": 18,
+            "answer": 12,
+            "user_id": 3,
+            "created_at": "2025-03-11T10:12:44.296Z"
+        }
+    ] 
+
+  ```
 
 ### **# Récupérer les réponses d'un utilisateur à un questionnaire**
 - **URL** : `/answer/results/:questionnaire_id/:user_id`
@@ -452,7 +460,42 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
       }
   }
 
+  ```
+
+### **# Récupérer toutes les réponses**
+- **URL** : `/answer`
+- **Méthode** : `GET`
+- **Description** : Récupère toutes les réponses disponibles.
+- **Réponse** :
+  - **Code** : `200 OK`
+  - **Corps** :
+    ```json
+    [
+      {
+        "answer_id": 1,
+        "user_id": 2,
+        "question_id": 5,
+        "response": "La réponse de l'utilisateur"
+      }
+    ]
     ```
+
+### **# Récupérer une réponse par ID**
+- **URL** : `/answer/:answer_id`
+- **Méthode** : `GET`
+- **Description** : Récupère une réponse spécifique par son identifiant.
+- **Réponse** :
+  - **Code** : `200 OK`
+  - **Corps** :
+    ```json
+    {
+      "answer_id": 1,
+      "user_id": 2,
+      "question_id": 5,
+      "response": "La réponse de l'utilisateur"
+    }
+    ```
+
 
 ---
 
