@@ -36,8 +36,7 @@ class AnswerController{
     };
 
     async getAnwserByUserByQuestionnaires(req, res){
-        const { questionnaire_id } = req.params;
-        const { user_id } = req.body;
+        const { questionnaire_id, user_id } = req.params;
 
         try{
             const questionnaire = await QuestionnaireModel.findByPk(questionnaire_id);

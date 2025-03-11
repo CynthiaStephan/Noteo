@@ -371,7 +371,7 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
     }
     ```
 
-    ## 📂 **Réponses (Answers)**
+## 📂 **Réponses (Answers)**
 
 ### **# Récupérer toutes les réponses**
 - **URL** : `/answer`
@@ -408,8 +408,8 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
     ```
 
 ### **# Récupérer les réponses d'un utilisateur à un questionnaire**
-- **URL** : `/answer/questionnaire/:questionnaire_id`
-- **Méthode** : `POST`
+- **URL** : `/answer/results/:questionnaire_id/:user_id`
+- **Méthode** : `GET`
 - **Description** : Récupère toutes les réponses d'un utilisateur pour un questionnaire donné.
 - **Corps de la requête** :
   ```json
