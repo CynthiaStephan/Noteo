@@ -67,7 +67,7 @@ export const Formateur = () => {
             <div className='tableauEleve'>
                 <div className='listeEleve'>
                     {filteredStudents.map((etudiant) => (
-                        <div key={etudiant.user_id} className='liste' onClick={() => console.log(`etudiant id:${etudiant.user_id}`)}>
+                        <div key={etudiant.user_id} className='liste' onClick={() => navigate(`/questionnaire?studiant_id=${etudiant.user_id}`)}>
                             <p>{getFormationForStudent(etudiant)}</p>
                             <p>{etudiant.last_name}</p>
                             <p>{etudiant.first_name}</p>
