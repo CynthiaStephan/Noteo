@@ -222,6 +222,32 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
       "user_id": 2
     }
     ```
+---
+
+### **# Récupérer un questionnaire par ID user**
+- **URL** : `/questionnaire/user/:user_id`
+- **Méthode** : `GET`
+- **Description** : Récupère les questionnaires associées à un utilisateur.
+- **Réponse** :
+  - **Code** : `200 OK`
+  - **Corps** :
+    ```json
+    {
+        "user_id": 5,
+        "first_name": "Lucas",
+        "last_name": "Morel",
+        "role": "intern",
+        "assigned_users": [
+            {
+                "questionnaire_id": 1,
+                "title": "Super questionnaire",
+                "description": null,
+                "created_at": "2025-03-07T13:53:21.000Z",
+                "user_id": 2
+            }
+        ]
+    }
+    ```
 
 ---
 
