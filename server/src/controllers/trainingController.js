@@ -16,7 +16,7 @@ class TrainingController {
     };
     async getTrainings(req, res) {
         try {
-            const [trainings] = await TrainingModel.findAll();
+            const trainings = await TrainingModel.findAll();
             if (!trainings || trainings.length === 0) {
                 return res.status(404).json({message: "Aucune formation trouvée"});
             }
