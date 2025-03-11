@@ -58,7 +58,8 @@ Toutes les requêtes nécessitent un **JWT** valide. Le token est stocké dans u
     "last_name": "Doe",
     "email": "johndoe@example.com",
     "password": "securepassword",
-    "role": "intern"
+    "role": "intern",
+    "training_id": 1
   }
   ```
 - **Réponse** :

@@ -1,4 +1,5 @@
 const UserModel = require('../models/userModel');
+const TrainingModel = require('../models/trainingModel');
 
 const bcrypt = require('bcrypt');
 
@@ -33,7 +34,7 @@ class UserController {
         }
     };
     async createUser(req, res) {
-        const { first_name, last_name, email, password, role} = req.body;
+        const { first_name, last_name, email, password, role, training_id} = req.body;
         try {
             const saltRounds = 10;
 
@@ -56,6 +57,10 @@ class UserController {
                 email: newUser.dataValues.email,
                 role: newUser.dataValues.role
             }
+            if (training_id) {
+                const training = await TrainingModel.findByPk(training_id);
+                await newUser.addTraining(training);
+            }
             res.status(201).json(newuserData)
         } catch (error) {
             res.status(500).json({ error : error.message});
@@ -63,7 +68,7 @@ class UserController {
     };
     async updateUser(req, res) {
         const { user_id } = req.params;
-        const { first_name, last_name, email, password, role } = req.body;
+        const { first_name, last_name, email, password, role, training_id } = req.body;
         try {
             const saltRounds = 10;
             
@@ -80,12 +85,26 @@ class UserController {
             if (role) updatedData.role = role;
 
             const [updatedUser] = await UserModel.update(updatedData, { where: {user_id: user_id} });
-            console.log(updatedUser);
             
             if (updatedUser === 0) {
                 return res.status(404).json({error: "Aucun utilisateur trouvé"});
             };
-            res.status(200).json({message: "Utilisateur mis à jour"});
+            // Si un training_id est fourni dans la requête, on associe la formation à l'utilisateur
+            if (training_id) {
+                // On récupère l'utilisateur et la formation par leur ID
+                const user = await UserModel.findByPk(user_id);
+                const training = await TrainingModel.findByPk(training_id);
+
+                // Si l'utilisateur et la formation existent, on effectue l'association
+                if (user && training) {
+                    await user.addTraining(training); // Association de la formation à l'utilisateur
+                    res.status(200).json({ message: "Utilisateur mis à jour et formation ajoutée" });
+                } else {
+                    return res.status(404).json({ error: "Utilisateur ou formation non trouvé"});
+                }
+            } else {
+                return res.status(200).json({ message: "Utilisateur mis à jour"});
+            }
         } catch (error) {
             res.status(500).json({error: error.message});
         };
