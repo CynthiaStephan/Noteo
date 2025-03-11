@@ -28,9 +28,12 @@ import './Questionnaire.css'
 export const Questionnaire = () => {
     const [chartData, setChartData] = useState(null)
 
+    const [disabledInput, setDisabledInput] = useState(true)
     const [listQuestionnaire, setListQuestionnaire] = useState([])
     const [selectedQuestions, setSelectedQuestions] = useState([])
     const [questionaireTitle, setQuestionaireTitle] = useState('')
+    const [reponseEtudiant, setReponseEtudiant] = useState([])
+    const [reponseFormateur, setReponseFormateur] = useState([])
 
     useEffect(() => {
         fetch(`http://localhost:5000/questionnaire`, {
@@ -55,12 +58,20 @@ export const Questionnaire = () => {
             .catch(error => console.error(error))
 
 
-        fetch(`http://localhost:5000/results/questionnaire/${clickedQuestionnaires.id}/${localStorage.getItem('userId')}`, {
+        fetch(`http://localhost:5000/answer/results/${clickedQuestionnaires.id}/${localStorage.getItem('userId')}`, {
             method: "GET"
         })
             .then(response => response.json())
             .then(data => {
-                console.log(data)
+                if (data.error === 'No answers found for this user in the given questionnaire') {
+                    setReponseEtudiant([])
+                    setDisabledInput(false)
+                } else {
+                    console.log(data)
+                    console.log(data.userAnswers.assigned_users[0].questions.map((q) => q.answers[0].intern_answer))
+                    setReponseEtudiant(data.userAnswers.assigned_users[0].questions.map((q) => q.answers[0].intern_answer))
+                    setDisabledInput(true)
+                }
             })
             .catch(error => console.error(error))
 
@@ -79,14 +90,14 @@ export const Questionnaire = () => {
                 },
                 {
                     label: 'auto eval',
-                    data: [],
+                    data: reponseEtudiant,
                     backgroundColor: 'rgba(54, 162, 235, 0.2)',
                     borderColor: 'rgb(54, 162, 235)',
                     borderWidth: 1,
                 },
             ],
         })
-    }, [selectedQuestions])
+    }, [selectedQuestions, reponseEtudiant])
 
     const [questionNote, setQuestionNote] = useState([])
     const noteValue = (e, questionName) => {
@@ -119,19 +130,25 @@ export const Questionnaire = () => {
                                     id={q.question_id}
                                     className='noteField'
                                     onChange={e => noteValue(e, q.question)}
-                                    label="note"
+                                    label={reponseEtudiant.length === 0 ? "note" : ''}
                                     type="number"
                                     inputProps={{
                                         min: 1,
                                         max: 16
                                     }}
                                     required
+                                    value={
+                                        localStorage.getItem('userRole') === 'intern' ?
+                                        reponseEtudiant.length === 0 ? '' : reponseEtudiant[i] :
+                                        console.log('pas un etudiant')
+                                    }
+                                    disabled={disabledInput}
                                 />
                             </li>
                         )}
                     </ul>
                     <div className='btnEnvoyer'>
-                        <Button type='submit' variant="contained" disableElevation>Envoyer</Button>
+                        <Button disabled={disabledInput} type='submit' variant="contained" disableElevation>Envoyer</Button>
                     </div>
 
                 </form>

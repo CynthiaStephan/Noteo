@@ -32,11 +32,13 @@ export const Connexion = () => {
             .then(data => {
                 console.log(data)
                 if (data.role === 'intern') {
+                    localStorage.setItem('userId', data.id)
+                    localStorage.setItem('userRole', data.role)
                     navigate('/questionnaire')
-                    localStorage.setItem('userId', data.id)
                 } else if (data.role === 'trainer' || data.role === 'admin') {
-                    navigate('/formateur')
                     localStorage.setItem('userId', data.id)
+                    localStorage.setItem('userRole', data.role)
+                    navigate('/formateur')
                 }
             })
             .catch(error => console.error(error))
