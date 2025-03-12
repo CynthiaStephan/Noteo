@@ -22,7 +22,12 @@ class UserController {
     async getUsers(req, res) {
         try {
             const users = await UserModel.findAll({
-                attributes: { exclude: "password"}
+                attributes: { exclude: "password"},
+                include:[{
+                    model: TrainingModel,
+                    through: { attributes: [] },
+                    required: false,
+                }]
             });
             console.log(users);
             if(!users || users.length === 0){
