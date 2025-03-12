@@ -53,13 +53,8 @@ export const Connexion = () => {
                     <TextField onChange={(e) => handleForm(e)} id="email" label="identifiant:" variant="standard" required />
                     <TextField onChange={(e) => handleForm(e)} id="password" label="mot de passe:" variant="standard" type="password" required />
                 </div>
-                <Button type="submit" variant="contained">Crée</Button>
+                <Button type="submit" variant="contained">Connexion</Button>
             </form>
-
-
-            <Link to={'./questionnaire'} >Questionnaire</Link> <br />
-            <Link to={'./formateur'} >Formateur</Link> <br />
-            <Link to={'./ajout_questionnaire'} >Ajout questionnaire</Link> <br />
         </>
     )
 }
