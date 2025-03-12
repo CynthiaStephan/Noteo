@@ -33,6 +33,7 @@ export const AjoutQuestion = () => {
     const [question, setQuestion] = useState([]) //stock les valeur pour l'ajout de question
     const [title, setTitle] = useState([{ titre: '' }]) //stock le titre du questionnaire
     const [listeQuestions, setListeQuestions] = useState([]) //stock la liste des questions
+    const [listFormation, setListFormation] = useState([])  //stock la liste des formations
     const [newQuestion, setNewQuestion] = useState('') //stock la nouvelle question crée
     const [disabledBtn, setDisabledBtn] = useState(false)
     const newQuestionRef = useRef(null) //recuperes la ref de la nouvelle question crée pour pouvoir supprimer le champs de text
@@ -73,7 +74,7 @@ export const AjoutQuestion = () => {
     const handleQuestionChange = (key, value) => {
         setQuestion(
             question.map((question) =>
-                question.key === key ? { ...question, text: value.question, questionId: value.question_id} : question
+                question.key === key ? { ...question, text: value.question, questionId: value.question_id } : question
             )
         )
     }
@@ -187,30 +188,6 @@ export const AjoutQuestion = () => {
     }
 
     /** gestion de à qui l'envoyer */
-    let listFormation = [
-        'Front',
-        'Back',
-        'Cda',
-        'ERA'
-    ]
-    // let listEtudiant = [
-    //     { "last_name": "Dupont", "first_name": "Jean", "formation": "Front", "role": "intern" },
-    //     { "last_name": "Martin", "first_name": "Sophie", "formation": "Back", "role": "intern" },
-    //     { "last_name": "Lemoine", "first_name": "Paul", "formation": "Cda", "role": "intern" },
-    //     { "last_name": "Durand", "first_name": "Emma", "formation": "ERA", "role": "intern" },
-    //     { "last_name": "Bernard", "first_name": "Lucas", "formation": "Front", "role": "intern" },
-    //     { "last_name": "Petit", "first_name": "Camille", "formation": "Back", "role": "intern" },
-    //     { "last_name": "Robert", "first_name": "Nicolas", "formation": "Cda", "role": "intern" },
-    //     { "last_name": "Richard", "first_name": "Elodie", "formation": "ERA", "role": "intern" },
-    //     { "last_name": "Simon", "first_name": "Julien", "formation": "Front", "role": "intern" },
-    //     { "last_name": "Lefevre", "first_name": "Alice", "formation": "Back", "role": "trainer" },
-    //     { "last_name": "Morel", "first_name": "Thomas", "formation": "Cda", "role": "intern" },
-    //     { "last_name": "Girard", "first_name": "Laura", "formation": "ERA", "role": "intern" },
-    //     { "last_name": "Andre", "first_name": "Maxime", "formation": "Front", "role": "intern" },
-    //     { "last_name": "Lambert", "first_name": "Chloe", "formation": "Back", "role": "intern" },
-    //     { "last_name": "Bonnet", "first_name": "Antoine", "formation": "Cda", "role": "intern" },
-    //     { "last_name": "Francois", "first_name": "Julie", "formation": "ERA", "role": "intern" }
-    // ]
 
     const [listEtudiant, setListEtudiant] = useState([])
     useEffect(() => {
@@ -220,6 +197,15 @@ export const AjoutQuestion = () => {
             .then(response => response.json())
             .then(data => {
                 setListEtudiant(data)
+            })
+            .catch(error => console.error(error))
+
+        fetch(`http://localhost:5000/training`, {
+            method: "GET"
+        })
+            .then(response => response.json())
+            .then(data => {
+                setListFormation(data)
             })
             .catch(error => console.error(error))
     }, [])
@@ -237,7 +223,7 @@ export const AjoutQuestion = () => {
     useEffect(() => {
         if (selectedFormation.length > 0) {
             let selectedEtudiants = listEtudiant
-                .map((etudiant, index) => (selectedFormation.includes(etudiant.formation) ? index : null))
+                .map((etudiant, index) =>(etudiant.trainings.some(training => selectedFormation.includes(training.name)) ? index : null))
                 .filter((index) => index !== null)
             setRight(selectedEtudiants)
             setLeft(listEtudiant.map((etudiant, index) => (selectedEtudiants.includes(index) || etudiant.role !== 'intern' ? null : index)).filter(index => index !== null))
@@ -354,8 +340,9 @@ export const AjoutQuestion = () => {
                         {question.map((question) => (
                             <li key={question.key}>
                                 <Autocomplete onChange={
-                                    (e) => {handleQuestionChange(question.key, listeQuestions.find(item => 
-                                        item.question === e.target.textContent))
+                                    (e) => {
+                                        handleQuestionChange(question.key, listeQuestions.find(item =>
+                                            item.question === e.target.textContent))
                                     }}
                                     disablePortal
                                     options={listeQuestions.map(q => q.question)}
@@ -394,10 +381,10 @@ export const AjoutQuestion = () => {
                                 input={<OutlinedInput label="Formation" />}
                                 renderValue={(selected) => selected.join(', ')}
                             >
-                                {listFormation.map((name) => (
-                                    <MenuItem key={name} value={name}>
-                                        <Checkbox checked={selectedFormation.includes(name)} />
-                                        <ListItemText primary={name} />
+                                {listFormation.map((f) => (
+                                    <MenuItem key={f.training_id} value={f.name}>
+                                        <Checkbox checked={selectedFormation.includes(f.name)} />
+                                        <ListItemText primary={f.name} />
                                     </MenuItem>
                                 ))}
                             </Select>

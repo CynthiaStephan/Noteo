@@ -9,7 +9,8 @@ import './Formateur.css'
 export const Formateur = () => {
     const navigate = useNavigate()
     const [listEtudiant, setListEtudiant] = useState([])
-    const [selectedFormations, setSelectedFormations] = useState([]);
+    const [listFormation, setListFormation] = useState([])
+    const [selectedFormations, setSelectedFormations] = useState([])
 
     useEffect(() => {
         fetch(`http://localhost:5000/user`, {
@@ -20,14 +21,16 @@ export const Formateur = () => {
                 setListEtudiant(data.filter(etudiant => etudiant.role === 'intern'))
             })
             .catch(error => console.error(error))
-    }, [])
 
-    let listFormation = [
-        { formation: 'Front', id_formation: 1 },
-        { formation: 'Back', id_formation: 2 },
-        { formation: 'Cda', id_formation: 3 },
-        { formation: 'ERA', id_formation: 4 }
-    ]
+            fetch(`http://localhost:5000/training`, {
+                method: "GET"
+            })
+                .then(response => response.json())
+                .then(data => {
+                    setListFormation(data)
+                })
+                .catch(error => console.error(error))
+    }, [])
 
     const handleCheck = (formation) => {
         setSelectedFormations((prev) =>
@@ -35,12 +38,8 @@ export const Formateur = () => {
         )
     }
 
-    const getFormationForStudent = (etudiant) => {
-        return etudiant.user_id % 2 === 1 ? 'Front' : 'Back'
-    }
-
     const filteredStudents = listEtudiant.filter(etudiant =>
-        selectedFormations.length === 0 || selectedFormations.includes(getFormationForStudent(etudiant))
+        selectedFormations.length === 0 || selectedFormations.includes(etudiant.trainings[0].name)
     )
 
 
@@ -50,8 +49,8 @@ export const Formateur = () => {
             <NavBase />
             <div className='formateur'>
                 <div className='filtreListe'>
-                    {listFormation.map((formation) => (
-                        <FormControlLabel checked={selectedFormations.includes(formation.formation)} onChange={() => handleCheck(formation.formation)} control={<Checkbox />} label={formation.formation} key={formation.id_formation} />
+                    {listFormation.map((f) => (
+                        <FormControlLabel checked={selectedFormations.includes(f.name)} onChange={() => handleCheck(f.name)} control={<Checkbox />} label={f.name} key={f.training_id} />
                     ))}
                 </div>
                 <Button onClick={() => navigate('/ajout_questionnaire')} variant="contained" >Rajouter questionnaire</Button>
@@ -68,7 +67,7 @@ export const Formateur = () => {
                 <div className='listeEleve'>
                     {filteredStudents.map((etudiant) => (
                         <div key={etudiant.user_id} className='liste' onClick={() => navigate(`/questionnaire?studiant_id=${etudiant.user_id}`)}>
-                            <p>{getFormationForStudent(etudiant)}</p>
+                            <p>{etudiant.trainings[0].name}</p>
                             <p>{etudiant.last_name}</p>
                             <p>{etudiant.first_name}</p>
                             <p className='mobileDisparition'>{etudiant.email}</p>

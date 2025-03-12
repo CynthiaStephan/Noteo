@@ -29,6 +29,7 @@ export const Questionnaire = () => {
     const [chartData, setChartData] = useState(null)
 
     const [disabledInput, setDisabledInput] = useState(true)
+    const [update, setUpdate] = useState(true)
     const [listQuestionnaire, setListQuestionnaire] = useState([])
     const [selectedQuestions, setSelectedQuestions] = useState([])
     const [questionaireTitle, setQuestionaireTitle] = useState('')
@@ -59,6 +60,7 @@ export const Questionnaire = () => {
             .then(data => {
                 setSelectedQuestions(data.questions)
                 setQuestionaireTitle(data.title)
+                setQuestionNote([])
             })
             .catch(error => console.error(error))
 
@@ -70,7 +72,7 @@ export const Questionnaire = () => {
             .then(response => response.json())
             .then(data => {
                 const reponse = data.userAnswers.assigned_users[0].questions
-                if (reponse.some((q) => q.answers.some((a) => a.user_id == userVerification)) && reponse.some((q) => q.answers.some((a) => a.user_id != userVerification))) {
+                if (!reponse.some((q) => q.answers.some((a) => a.user_id != userVerification))) {
                     setReponseEtudiant([])
                     setReponseFormateur([])
                     setDisabledInput(false)
@@ -97,6 +99,35 @@ export const Questionnaire = () => {
             .catch(error => console.error(error))
     }
 
+    const sendResult = (e) => {
+        e.preventDefault()
+        console.log(
+            {
+                user_id: userVerification,
+                answers: questionNote
+            }
+        )
+
+        fetch(`http://localhost:5000/answer/new/questionnaire`, {
+            method: "POST",
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(
+                {
+                    user_id: userVerification,
+                    answers: questionNote
+                }
+            )
+        })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data)
+                setUpdate(true)
+            })
+            .catch(error => console.error(error))
+    }
+
     useEffect(() => {
         setChartData({
             labels: selectedQuestions.map((q, i) => `Q: ${i + 1}`),
@@ -117,23 +148,29 @@ export const Questionnaire = () => {
                 },
             ],
         })
-    }, [selectedQuestions, reponseEtudiant])
+    }, [selectedQuestions, reponseEtudiant, update])
 
     const [questionNote, setQuestionNote] = useState([])
-    const noteValue = (e, questionName) => {
+    const noteValue = (e, questionId) => {
         if (e.target.value > 16) {
             e.target.value = 16
         }
         if (e.target.value < 0) {
             e.target.value = 1
         }
-        setQuestionNote(value => ({ ...value, [questionName]: e.target.value }))
+
+        setQuestionNote(prev => {
+            const existingIndex = prev.findIndex(q => q.question_id === questionId)
+            if (existingIndex !== -1) {
+                return prev.map((q, index) =>
+                    index === existingIndex ? { ...q, answer: e.target.value } : q
+                )
+            } else {
+                return [...prev, { question_id: questionId, answer: e.target.value }]
+            }
+        })
     }
 
-    const sendResult = (e) => {
-        e.preventDefault()
-        console.log(questionNote)
-    }
 
     return (
         chartData &&
@@ -149,7 +186,7 @@ export const Questionnaire = () => {
                                 <TextField
                                     id={q.question_id}
                                     className='noteField'
-                                    onChange={e => noteValue(e, q.question)}
+                                    onChange={e => noteValue(e, q.question_id)}
                                     label={reponseEtudiant.length === 0 ? "note" : ''}
                                     type="number"
                                     inputProps={{
@@ -157,11 +194,11 @@ export const Questionnaire = () => {
                                         max: 16
                                     }}
                                     required
-                                    value={
-                                        localStorage.getItem('userRole') === 'intern' ?
-                                            reponseEtudiant.length === 0 ? '' : reponseEtudiant[i] :
-                                            reponseFormateur.length === 0 ? '' : reponseFormateur[i]
-                                    }
+                                    // value={
+                                    //     localStorage.getItem('userRole') === 'intern' ?
+                                    //         reponseEtudiant.length === 0 ? '' : reponseEtudiant[i] :
+                                    //         reponseFormateur.length === 0 ? '' : reponseFormateur[i]
+                                    // }
                                     disabled={disabledInput}
                                 />
                             </li>
