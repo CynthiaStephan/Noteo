@@ -14,16 +14,9 @@ class AuthController{
             if (!user || !(await bcrypt.compare(password, user.password))) {
                 return res.status(401).json({ message: "Wrong email or password" });
             }
-            const token = jwt.sign({ username: user.username, role: user.role }, process.env.JWT_SECRET, { expiresIn: '2h' });
+            const token = jwt.sign({ first_name: user.first_name, last_name: user.last_name, role: user.role }, process.env.JWT_SECRET, { expiresIn: '2h' });
             console.log(token)
             res.cookie("token", token, {
-                httpOnly: true, 
-                secure: false, 
-                sameSite: "Strict"
-
-            });
-
-            res.cookie("testCookie", "test", {
                 httpOnly: true, 
                 secure: false, 
                 sameSite: "Strict"
