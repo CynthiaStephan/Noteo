@@ -182,9 +182,6 @@ export const AjoutQuestion = () => {
                 }
             })
             .catch(error => console.error(error))
-
-        setAddSuccessMessage('Questionnaire crée.')
-        setAddSuccess(true)
     }
 
     /** gestion de à qui l'envoyer */
@@ -223,7 +220,7 @@ export const AjoutQuestion = () => {
     useEffect(() => {
         if (selectedFormation.length > 0) {
             let selectedEtudiants = listEtudiant
-                .map((etudiant, index) =>(etudiant.trainings.some(training => selectedFormation.includes(training.name)) ? index : null))
+                .map((etudiant, index) => (etudiant.trainings.some(training => selectedFormation.includes(training.name)) ? index : null))
                 .filter((index) => index !== null)
             setRight(selectedEtudiants)
             setLeft(listEtudiant.map((etudiant, index) => (selectedEtudiants.includes(index) || etudiant.role !== 'intern' ? null : index)).filter(index => index !== null))
@@ -289,7 +286,7 @@ export const AjoutQuestion = () => {
     }
 
     const filteredLeft = left.filter((index) => {
-        const student = listEtudiant[index];
+        const student = listEtudiant[index]
         return (
             student.last_name.toLowerCase().includes(searchTerm) || student.first_name.toLowerCase().includes(searchTerm)
         )
@@ -362,7 +359,12 @@ export const AjoutQuestion = () => {
                     </ul>
 
                     <form onSubmit={(e) => createNewQuestion(e)} className='addNewQuestion'>
-                        <TextField id='newQuestion' inputRef={newQuestionRef} onChange={(e) => handleNewQuestionChange(e.target.value)} label="Nouvelle question:" variant="outlined" />
+                        <TextField id='newQuestion'
+                            inputRef={newQuestionRef}
+                            onChange={(e) => handleNewQuestionChange(e.target.value)}
+                            label="Nouvelle question:"
+                            variant="outlined"
+                        />
                         <Button id='btnCreeQuestion' type="submit" variant="contained" disableElevation>Crée nouvelle question</Button>
                     </form>
                 </div>

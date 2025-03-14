@@ -19,6 +19,7 @@ export const Formateur = () => {
             .then(response => response.json())
             .then(data => {
                 setListEtudiant(data.filter(etudiant => etudiant.role === 'intern'))
+                console.log(data)
             })
             .catch(error => console.error(error))
 
@@ -67,7 +68,7 @@ export const Formateur = () => {
                 <div className='listeEleve'>
                     {filteredStudents.map((etudiant) => (
                         <div key={etudiant.user_id} className='liste' onClick={() => navigate(`/questionnaire?studiant_id=${etudiant.user_id}`)}>
-                            <p>{etudiant.trainings[0].name}</p>
+                            <p>{etudiant.trainings.length === 0 ? '' : etudiant.trainings[0].name}</p>
                             <p>{etudiant.last_name}</p>
                             <p>{etudiant.first_name}</p>
                             <p className='mobileDisparition'>{etudiant.email}</p>
