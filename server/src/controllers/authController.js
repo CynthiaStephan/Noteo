@@ -34,7 +34,7 @@ class AuthController{
 
     async register(req, res){
 
-        const { first_name, last_name, email, password, role  } = req.body;
+        const { first_name, last_name, email, password, role, training_id  } = req.body;
 
         try {
             const saltRounds = 10;
@@ -59,6 +59,11 @@ class AuthController{
                 email: newUser.dataValues.email,
                 role: newUser.dataValues.role
 
+            }
+
+            if (training_id) {
+                const training = await TrainingModel.findByPk(training_id);
+                await newUser.addTraining(training);
             }
             res.status(201).json(newuserData)
             
