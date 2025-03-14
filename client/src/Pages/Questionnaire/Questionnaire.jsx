@@ -72,30 +72,30 @@ export const Questionnaire = () => {
             .then(response => response.json())
             .then(data => {
                 const reponse = data.userAnswers.assigned_users[0].questions
-                if (!reponse.some((q) => q.answers.some((a) => a.user_id != userVerification))) {
+                console.log(reponse)
+
+                setReponseEtudiant([])
+                setReponseFormateur([])
+                setDisabledInput(false)
+
+                if (reponse.some((q) => q.answers.some((a) => a.user_id == userVerification))) {
+                    setReponseEtudiant(reponse.map((q) => q.answers.find((a) => a.user_id == userVerification).answer))
+
+                } else {
                     setReponseEtudiant([])
+                    setDisabledInput(false)
+                }
+
+                if (reponse.some((q) => q.answers.some((a) => a.user_id != userVerification))) {
+                    setReponseFormateur(reponse.map((q) => q.answers.find((a) => a.user_id != userVerification).answer))
+
+                } else {
                     setReponseFormateur([])
                     setDisabledInput(false)
-                } else {
-
-                    if (reponse.some((q) => q.answers.some((a) => a.user_id == userVerification))) {
-                        setReponseEtudiant(reponse.map((q) => q.answers.find((a) => a.user_id == userVerification).answer))
-
-                    } else {
-                        setReponseEtudiant([])
-                        setDisabledInput(false)
-                    }
-
-                    if (reponse.some((q) => q.answers.some((a) => a.user_id != userVerification))) {
-                        setReponseFormateur(reponse.map((q) => q.answers.find((a) => a.user_id != userVerification).answer))
-
-                    } else {
-                        setReponseFormateur([])
-                        setDisabledInput(false)
-                    }
-
                 }
-            })
+
+            }
+            )
             .catch(error => console.error(error))
     }
 
